@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* App global styles */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100 antialiased;
+}
+
+.container-page {
+  @apply p-4 md:p-6 lg:p-8;
+}
