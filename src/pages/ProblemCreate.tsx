@@ -286,16 +286,14 @@ export default function ProblemCreate() {
   const currentTab = TAB_SEQUENCE[currentTabIndex];
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-900">
-      <div className="mx-auto w-full  flex-1 rounded-2xl bg-white shadow-xl dark:bg-slate-800">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
-          <h1 className="mb-2 text-3xl font-bold text-white">Create New Problem</h1>
-          <p className="text-blue-100">
+    <div className="flex min-h-screen flex-col ">
+      <div className="mx-auto w-full  flex-1 rounded-2xl ">
+          <h1 className="mb-2 text-2xl font-bold ">Create New Problem</h1>
+          <p className="text-gray-800">
             Step {currentTabIndex + 1} of {TAB_SEQUENCE.length}: {currentTab.title}
           </p>
-        </div>
 
-        <div className="border-b border-gray-200 bg-gray-50 p-6 dark:border-slate-700 dark:bg-slate-900">
+        <div className="border-b border-gray-200  p-6 dark:border-slate-700 dark:bg-slate-900">
           <div className="mb-4 flex items-center justify-between">
             {TAB_SEQUENCE.map((tab, index) => (
               <div key={tab.id} className="flex items-center">

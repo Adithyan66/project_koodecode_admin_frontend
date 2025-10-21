@@ -39,7 +39,9 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={`w-full rounded-lg border-2 px-4 py-3 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.title ? 'border-red-500' : 'border-gray-200 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-900'
+                errors.title 
+                  ? 'border-red-500 dark:border-red-400' 
+                  : 'border-gray-200 focus:border-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100'
               }`}
               placeholder="Two Sum"
               onBlur={() => {
@@ -50,7 +52,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
                 }
               }}
             />
-            {errors.title && <p className="mt-2 text-sm text-red-500">{errors.title}</p>}
+            {errors.title && <p className="mt-2 text-sm text-red-500 dark:text-red-400">{errors.title}</p>}
           </div>
 
           <div>
@@ -60,7 +62,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-gray-100"
+              className="w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-3 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
             >
               <option value="easy">🟢 Easy</option>
               <option value="medium">🟡 Medium</option>
@@ -74,7 +76,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
               id="isActive"
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
-              className="h-5 w-5 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600"
+              className="h-5 w-5 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:checked:bg-blue-600"
             />
             <label htmlFor="isActive" className="text-sm font-medium text-blue-900 dark:text-blue-200">
               Make problem active immediately
@@ -90,8 +92,10 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={10}
-            className={`w-full resize-none rounded-lg border-2 px-4 py-3 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-900 dark:text-gray-100 ${
-              errors.description ? 'border-red-500' : 'border-gray-200 focus:border-blue-500'
+            className={`w-full resize-none rounded-lg border-2 px-4 py-3 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-gray-100 ${
+              errors.description 
+                ? 'border-red-500 dark:border-red-400' 
+                : 'border-gray-200 focus:border-blue-500 dark:border-slate-600'
             }`}
             placeholder="Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target..."
             onBlur={() => {
@@ -102,7 +106,7 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
               }
             }}
           />
-          {errors.description && <p className="mt-2 text-sm text-red-500">{errors.description}</p>}
+          {errors.description && <p className="mt-2 text-sm text-red-500 dark:text-red-400">{errors.description}</p>}
         </div>
       </div>
     </div>

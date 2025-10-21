@@ -92,7 +92,7 @@ const TestCasesTab: React.FC<Props> = ({
             type="number"
             value={value || ''}
             onChange={(e) => onChange(parseFloat(e.target.value) || '')}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder={placeholder || `Enter ${parameter.name}`}
             min={constraint?.minValue}
             max={constraint?.maxValue}
@@ -105,7 +105,7 @@ const TestCasesTab: React.FC<Props> = ({
             type="text"
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder={placeholder || `Enter ${parameter.name}`}
             minLength={constraint?.minLength}
             maxLength={constraint?.maxLength}
@@ -117,7 +117,7 @@ const TestCasesTab: React.FC<Props> = ({
           <select
             value={value?.toString() || 'false'}
             onChange={(e) => onChange(e.target.value === 'true')}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
           >
             <option value="">Select boolean</option>
             <option value="false">false</option>
@@ -133,7 +133,7 @@ const TestCasesTab: React.FC<Props> = ({
             type="text"
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder={
               parameter.type === 'number[]'
                 ? '[1,2,3,4]'
@@ -151,7 +151,7 @@ const TestCasesTab: React.FC<Props> = ({
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder={
               parameter.type === 'number[][]'
                 ? '[[1,2],[3,4]]'
@@ -167,7 +167,7 @@ const TestCasesTab: React.FC<Props> = ({
             type="text"
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder={
               parameter.type === 'TreeNode'
                 ? '[1,2,3,null,4]'
@@ -182,7 +182,7 @@ const TestCasesTab: React.FC<Props> = ({
             value={value || ''}
             onChange={(e) => onChange(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
             placeholder="Enter JSON object"
           />
         );
@@ -193,42 +193,42 @@ const TestCasesTab: React.FC<Props> = ({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-700">Test Cases</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Test Cases</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Create comprehensive test cases to validate solutions (minimum 5 required)
           </p>
         </div>
         <button
           type="button"
           onClick={addTestCase}
-          className="flex items-center rounded-lg bg-purple-500 px-4 py-2 text-white shadow-md transition-colors hover:bg-purple-600 hover:shadow-lg"
+          className="flex items-center rounded-lg bg-purple-500 px-4 py-2 text-white shadow-md transition-colors hover:bg-purple-600 hover:shadow-lg dark:bg-purple-600 dark:hover:bg-purple-700"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Test Case
         </button>
       </div>
 
-      {errors.testCases && <p className="text-sm text-red-500">{errors.testCases}</p>}
+      {errors.testCases && <p className="text-sm text-red-500 dark:text-red-400">{errors.testCases}</p>}
 
       <div className="space-y-4">
         {testCases.map((testCase, index) => (
           <div
             key={testCase.id}
-            className="rounded-lg border-2 border-gray-200 bg-white p-6 transition-colors hover:border-purple-300"
+            className="rounded-lg border-2 border-gray-200 bg-white p-6 transition-colors hover:border-purple-300 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-purple-500"
           >
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="flex items-center font-medium text-gray-700">
-                <span className="mr-3 rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-800">
+              <h3 className="flex items-center font-medium text-gray-700 dark:text-gray-300">
+                <span className="mr-3 rounded-full bg-purple-100 px-3 py-1 text-sm text-purple-800 dark:bg-purple-900 dark:text-purple-200">
                   Test Case {index + 1}
                 </span>
               </h3>
               <div className="flex items-center space-x-3">
-                <label className="flex items-center space-x-2 text-sm text-gray-600">
+                <label className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                   <input
                     type="checkbox"
                     checked={testCase.isSample}
                     onChange={(e) => updateTestCaseSample(testCase.id, e.target.checked)}
-                    className="rounded border-gray-300 text-purple-600 shadow-sm focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                    className="rounded border-gray-300 text-purple-600 shadow-sm focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50 dark:border-slate-600 dark:bg-slate-700"
                   />
                   <span>Sample (visible in examples)</span>
                 </label>
@@ -236,7 +236,7 @@ const TestCasesTab: React.FC<Props> = ({
                   <button
                     type="button"
                     onClick={() => removeTestCase(testCase.id)}
-                    className="rounded p-1 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700"
+                    className="rounded p-1 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -246,14 +246,14 @@ const TestCasesTab: React.FC<Props> = ({
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="space-y-4">
-                <h4 className="border-b pb-2 font-medium text-gray-600">Input Parameters</h4>
+                <h4 className="border-b pb-2 font-medium text-gray-600 dark:text-gray-400">Input Parameters</h4>
                 {parameters
                   .filter((p) => p.name.trim())
                   .map((param) => (
                     <div key={param.id}>
-                      <label className="mb-2 block text-sm font-medium text-gray-600">
+                      <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-400">
                         {param.name}{' '}
-                        <span className="text-gray-400">({param.type})</span>
+                        <span className="text-gray-400 dark:text-gray-500">({param.type})</span>
                       </label>
                       {generateInputField(
                         param,
@@ -265,9 +265,9 @@ const TestCasesTab: React.FC<Props> = ({
               </div>
 
               <div>
-                <h4 className="mb-4 border-b pb-2 font-medium text-gray-600">Expected Output</h4>
-                <label className="mb-2 block text-sm font-medium text-gray-600">
-                  Result <span className="text-gray-400">({returnType})</span>
+                <h4 className="mb-4 border-b pb-2 font-medium text-gray-600 dark:text-gray-400">Expected Output</h4>
+                <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Result <span className="text-gray-400 dark:text-gray-500">({returnType})</span>
                 </label>
                 {generateInputField(
                   { name: 'output', type: returnType, description: '', id: 'output' },

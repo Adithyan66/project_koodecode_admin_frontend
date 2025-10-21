@@ -449,34 +449,34 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
   return (
     <div className="space-y-6">
       {/* Basic Function Definition */}
-      <div className="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
-        <h2 className="mb-6 flex items-center text-xl font-bold text-gray-800">
-          <Code className="mr-3 h-6 w-6 text-blue-600" />
+      <div className="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 dark:border-blue-800 dark:from-blue-950 dark:to-indigo-950">
+        <h2 className="mb-6 flex items-center text-xl font-bold text-gray-800 dark:text-gray-200">
+          <Code className="mr-3 h-6 w-6 text-blue-600 dark:text-blue-400" />
           Function Definition
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="mb-3 block text-sm font-semibold text-gray-700">
+            <label className="mb-3 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Function Name *
             </label>
             <input
               type="text"
               value={functionName}
               onChange={(e) => setFunctionName(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 font-mono focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-3 font-mono focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
               placeholder="twoSum"
             />
           </div>
 
           <div>
-            <label className="mb-3 block text-sm font-semibold text-gray-700">
+            <label className="mb-3 block text-sm font-semibold text-gray-700 dark:text-gray-300">
               Return Type *
             </label>
             <select
               value={returnType}
               onChange={(e) => setReturnType(e.target.value)}
-              className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
             >
               {SUPPORTED_TYPES.map((type) => (
                 <option key={type} value={type}>
@@ -489,13 +489,13 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
       </div>
 
       {/* Parameters Section */}
-      <div className="rounded-xl border-2 border-gray-200 bg-white p-6">
+      <div className="rounded-xl border-2 border-gray-200 bg-white p-6 dark:border-slate-600 dark:bg-slate-800">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-700">Parameters</h3>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Parameters</h3>
           <button
             type="button"
             onClick={addParameter}
-            className="flex items-center rounded-lg bg-green-500 px-4 py-2 text-white transition-colors hover:bg-green-600"
+            className="flex items-center rounded-lg bg-green-500 px-4 py-2 text-white transition-colors hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
           >
             <Plus className="mr-2 h-4 w-4" />
             Add Parameter
@@ -504,14 +504,14 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
 
         <div className="space-y-4">
           {parameters.map((param, index) => (
-            <div key={param.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <div key={param.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-600 dark:bg-slate-700">
               <div className="mb-3 flex items-center justify-between">
-                <h4 className="text-lg font-medium text-gray-700">Parameter {index + 1}</h4>
+                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-300">Parameter {index + 1}</h4>
                 {parameters.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeParameter(param.id)}
-                    className="rounded p-1 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700"
+                    className="rounded p-1 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -520,22 +520,22 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-600">Name</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-400">Name</label>
                   <input
                     type="text"
                     value={param.name}
                     onChange={(e) => updateParameter(param.id, 'name', e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                     placeholder="nums"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-600">Type</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-400">Type</label>
                   <select
                     value={param.type}
                     onChange={(e) => updateParameter(param.id, 'type', e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                   >
                     {SUPPORTED_TYPES.map((type) => (
                       <option key={type} value={type}>
@@ -546,12 +546,12 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-600">Description</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-400">Description</label>
                   <input
                     type="text"
                     value={param.description}
                     onChange={(e) => updateParameter(param.id, 'description', e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                     placeholder="Array of integers"
                   />
                 </div>
@@ -562,16 +562,16 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
       </div>
 
       {/* Language Selection */}
-      <div className="rounded-xl border-2 border-gray-200 bg-white p-6">
+      <div className="rounded-xl border-2 border-gray-200 bg-white p-6 dark:border-slate-600 dark:bg-slate-800">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-700">Supported Languages</h3>
-          <div className="rounded-full bg-blue-50 px-3 py-1 text-sm text-gray-600">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Supported Languages</h3>
+          <div className="rounded-full bg-blue-50 px-3 py-1 text-sm text-gray-600 dark:bg-blue-900 dark:text-blue-200">
             {selectedLanguageIds.length} selected
           </div>
         </div>
 
         {isLoadingLanguages ? (
-          <div className="flex items-center justify-center py-8 text-gray-500">
+          <div className="flex items-center justify-center py-8 text-gray-500 dark:text-gray-400">
             <div className="mr-3 h-6 w-6 animate-spin rounded-full border-b-2 border-blue-600"></div>
             Loading languages...
           </div>
@@ -580,15 +580,15 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
             {languages.map((language) => (
               <label
                 key={language.id}
-                className="flex cursor-pointer items-center space-x-3 rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50"
+                className="flex cursor-pointer items-center space-x-3 rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-slate-600 dark:hover:bg-slate-700"
               >
                 <input
                   type="checkbox"
                   checked={selectedLanguageIds.includes(language.id)}
                   onChange={() => handleLanguageToggle(language.id)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 dark:border-slate-600 dark:bg-slate-700"
                 />
-                <span className="flex-1 text-sm font-medium text-gray-700">
+                <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                   {language.name}
                 </span>
               </label>
@@ -599,19 +599,19 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
 
       {/* Templates Section - Simple Input Boxes */}
       {selectedLanguages.length > 0 ? (
-        <div className="rounded-xl border-2 border-gray-200 bg-white">
-          <div className="border-b border-gray-200 p-6">
-            <h3 className="flex items-center text-lg font-semibold text-gray-700">
+        <div className="rounded-xl border-2 border-gray-200 bg-white dark:border-slate-600 dark:bg-slate-800">
+          <div className="border-b border-gray-200 p-6 dark:border-slate-600">
+            <h3 className="flex items-center text-lg font-semibold text-gray-700 dark:text-gray-300">
               <FileText className="mr-2 h-5 w-5" />
               Language Templates
-              <span className="ml-2 text-sm font-normal text-gray-500">
+              <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
                 ({selectedLanguages.length} languages)
               </span>
             </h3>
           </div>
 
           {/* Language Template Tabs */}
-          <div className="flex flex-wrap border-b border-gray-200 bg-gray-50 px-6">
+          <div className="flex flex-wrap border-b border-gray-200 bg-gray-50 px-6 dark:border-slate-600 dark:bg-slate-700">
             {selectedLanguages.map((language) => (
               <button
                 key={language.id}
@@ -622,8 +622,8 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
                 }
                 className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                   activeTemplateTab === language.id
-                    ? 'border-blue-500 bg-white text-blue-600'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    ? 'border-blue-500 bg-white text-blue-600 dark:bg-slate-800 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:border-slate-500 dark:hover:text-gray-300'
                 }`}
               >
                 {language.name}
@@ -641,13 +641,13 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
 
                 return (
                   <div className="space-y-6">
-                    <h4 className="mb-4 text-lg font-medium text-gray-700">
+                    <h4 className="mb-4 text-lg font-medium text-gray-700 dark:text-gray-300">
                       {language.name} Template Configuration
                     </h4>
 
                     {/* Function Signature Input Box */}
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Function Signature
                       </label>
                       <input
@@ -660,7 +660,7 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
                             e.target.value,
                           )
                         }
-                        className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
                         placeholder="e.g., int* twoSum(int* nums, int numsSize, int target, int* returnSize)"
                         style={{ fontFamily: 'Monaco, Consolas, "Lucida Console", monospace' }}
                       />
@@ -668,9 +668,9 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
 
                     {/* Template Code Box */}
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Template Code
-                        <span className="ml-2 text-xs text-gray-500">
+                        <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
                           (Use {template.placeholder} as placeholder)
                         </span>
                       </label>
@@ -679,7 +679,7 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
                         onChange={(e) =>
                           updateTemplate(activeTemplateTab, 'templateCode', e.target.value)
                         }
-                        className="h-64 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="h-64 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-gray-100"
                         placeholder={`Enter template code for ${language.name}...
 
 Example:
@@ -704,7 +704,7 @@ int main() {
 
                     {/* Placeholder Input */}
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Placeholder Text
                       </label>
                       <input
@@ -713,7 +713,7 @@ int main() {
                         onChange={(e) =>
                           updateTemplate(activeTemplateTab, 'placeholder', e.target.value)
                         }
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                         placeholder="USER_FUNCTION_PLACEHOLDER"
                       />
                     </div>
@@ -722,15 +722,15 @@ int main() {
               })()}
             </div>
           ) : (
-            <div className="p-12 text-center text-gray-500">
-              <FileText className="mx-auto mb-4 h-16 w-16 text-gray-300" />
+            <div className="p-12 text-center text-gray-500 dark:text-gray-400">
+              <FileText className="mx-auto mb-4 h-16 w-16 text-gray-300 dark:text-gray-600" />
               <p className="text-lg">Click on a language tab above to edit its template</p>
             </div>
           )}
         </div>
       ) : (
-        <div className="rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 py-12 text-center text-gray-500">
-          <Languages className="mx-auto mb-4 h-16 w-16 text-gray-300" />
+        <div className="rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 py-12 text-center text-gray-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-400">
+          <Languages className="mx-auto mb-4 h-16 w-16 text-gray-300 dark:text-gray-600" />
           <p className="text-lg">Select languages to create templates</p>
         </div>
       )}
