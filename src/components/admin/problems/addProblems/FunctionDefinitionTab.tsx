@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Code, Plus, X, Languages, FileText } from 'lucide-react';
+import { generateDefaultTemplate } from '../../../../utils/templateGenerator';
 import type {
   Parameter,
   Language,
@@ -207,143 +208,14 @@ const FunctionDefinitionTab: React.FC<Props> = ({
     }
   };
 
-  const generateDefaultTemplate = (
+  // Use the shared template generator
+  const generateDefaultTemplateLocal = (
     language: Language,
     funcName: string,
     retType: string,
     params: Parameter[],
   ): LanguageTemplate => {
-    const languageKey = getLanguageKey(language.name);
-    const placeholder = 'USER_FUNCTION_PLACEHOLDER';
-    const signature = generateFunctionSignature(languageKey, funcName, retType, params);
-
-    const validParams = params.filter((p) => p.name.trim() && p.type);
-
-    switch (languageKey) {
-      case 'c':
-        return {
-          templateCode: `#include <stdio.h>
-#include <stdlib.h>
-
-${placeholder}
-
-int main() {
-    // Read input from stdin
-${validParams.map((p) => `    // TODO: Read ${p.name} (${p.type})`).join('\n')}
-    
-    // Call your function
-    // TODO: Call ${funcName} and print result
-    
-    return 0;
-}`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-
-      case 'cpp':
-        return {
-          templateCode: `#include <iostream>
-#include <vector>
-#include <string>
-using namespace std;
-
-${placeholder}
-
-int main() {
-    // Read input from stdin
-${validParams.map((p) => `    // TODO: Read ${p.name} (${p.type})`).join('\n')}
-    
-    // Call your function
-    // TODO: Call ${funcName} and print result
-    
-    return 0;
-}`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-
-      case 'java':
-        return {
-          templateCode: `import java.util.*;
-import java.io.*;
-
-public class Solution {
-    ${placeholder}
-    
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
-        // Read input from stdin
-${validParams.map((p) => `        // TODO: Read ${p.name} (${p.type})`).join('\n')}
-        
-        Solution solution = new Solution();
-        // TODO: Call ${funcName} and print result
-        
-        br.close();
-    }
-}`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-
-      case 'python':
-        return {
-          templateCode: `import sys
-from typing import List, Optional
-
-class Solution:
-    ${placeholder}
-
-if __name__ == "__main__":
-    # Read input from stdin
-    lines = sys.stdin.read().strip().split('\\n')
-    
-    # TODO: Parse input
-${validParams.map((p) => `    # ${p.name}: ${p.type}`).join('\n')}
-    
-    # Create solution instance and call function
-    solution = Solution()
-    # TODO: Call ${funcName} and print result`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-
-      case 'javascript':
-      case 'nodejs':
-        return {
-          templateCode: `const readline = require('readline');
-
-${placeholder}
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-let lines = [];
-rl.on('line', (line) => {
-    lines.push(line.trim());
-}).on('close', () => {
-    // Parse input
-${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
-    
-    // Call function and print result
-    // TODO: Call ${funcName} and print result
-});`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-
-      default:
-        return {
-          templateCode: `${placeholder}
-
-// TODO: Implement main function and input/output handling
-// Read from stdin, call your function, and print the result`,
-          userFunctionSignature: signature,
-          placeholder,
-        };
-    }
+    return generateDefaultTemplate(language, funcName, retType, params);
   };
 
   // Initialize and cleanup templates
@@ -354,7 +226,7 @@ ${validParams.map((p) => `    // TODO: Parse ${p.name} (${p.type})`).join('\n')}
         if (!newTemplates[langId]) {
           const language = languages.find((l) => l.id === langId);
           if (language) {
-            newTemplates[langId] = generateDefaultTemplate(
+            newTemplates[langId] = generateDefaultTemplateLocal(
               language,
               functionName,
               returnType,

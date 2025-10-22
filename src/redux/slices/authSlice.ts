@@ -11,6 +11,7 @@ export interface AuthUser {
 }
 
 export interface AuthState {
+	token: any;
 	user: AuthUser | null;
 	accessToken: string | null;
 	refreshToken: string | null;
@@ -25,7 +26,7 @@ function readInitialState(): AuthState {
 	} catch {
 		// ignore
 	}
-	return { user: null, accessToken: null, refreshToken: null };
+	return { user: null, token: null, accessToken: null, refreshToken: null };
 }
 
 const initialState: AuthState = readInitialState();
@@ -49,8 +50,22 @@ const authSlice = createSlice({
 				localStorage.setItem(AUTH_KEY, JSON.stringify(state));
 			} catch {}
 		},
+		updateTokens(
+			state,
+			action: PayloadAction<{
+				accessToken: string;
+				refreshToken: string;
+			}>,
+		) {
+			state.accessToken = action.payload.accessToken;
+			state.refreshToken = action.payload.refreshToken;
+			try {
+				localStorage.setItem(AUTH_KEY, JSON.stringify(state));
+			} catch {}
+		},
 		logout(state) {
 			state.user = null;
+			state.token = null;
 			state.accessToken = null;
 			state.refreshToken = null;
 			try {
@@ -60,7 +75,7 @@ const authSlice = createSlice({
 	},
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, updateTokens, logout } = authSlice.actions;
 export default authSlice.reducer;
 
 

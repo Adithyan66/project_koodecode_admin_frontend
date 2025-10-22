@@ -3,10 +3,13 @@ import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import AppRoutes from './routes/AppRoutes'
+import LoadingSpinner from './components/LoadingSpinner'
+import GlobalLoadingOverlay from './components/GlobalLoadingOverlay'
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="p-4">Loading...</div>}>
+    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <AppRoutes />
       <Outlet />
       <ToastContainer
@@ -22,5 +25,7 @@ export default function App() {
         theme="colored"
       />
     </Suspense>
+    <GlobalLoadingOverlay />
+    </>
   )
 }

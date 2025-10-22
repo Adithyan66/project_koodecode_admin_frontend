@@ -7,4 +7,9 @@ export async function loginRequest(email: string, password: string): Promise<Log
 	return data;
 }
 
+export async function refreshTokenRequest(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> {
+	const { data } = await axiosInstance.post('/auth/refresh-token', { refreshToken });
+	return data;
+}
+
 
