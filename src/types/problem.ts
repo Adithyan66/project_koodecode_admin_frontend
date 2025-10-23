@@ -1,3 +1,5 @@
+import type { SortOrder } from '../hooks/utils/useSorting';
+
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type ProblemStatus = 'active' | 'inactive';
 
@@ -45,7 +47,7 @@ export interface ProblemsResponse {
 }
 
 export type ProblemsSortBy = 'problemNumber' | 'title' | 'difficulty' | 'acceptanceRate' | 'totalSubmissions' | 'createdAt';
-export type SortOrder = 'asc' | 'desc';
+export type { SortOrder };
 
 export interface ProblemsQuery {
 	search?: string;
