@@ -10,6 +10,7 @@ interface UsePaginationState {
   page: number;
   limit: number;
   totalPages: number;
+  totalCount: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
   startIndex: number;
@@ -80,11 +81,12 @@ export function usePagination({
     page,
     limit,
     totalPages,
+    totalCount,
     hasNextPage,
     hasPreviousPage,
     startIndex,
     endIndex,
-  }), [page, limit, totalPages, hasNextPage, hasPreviousPage, startIndex, endIndex]);
+  }), [page, limit, totalPages, totalCount, hasNextPage, hasPreviousPage, startIndex, endIndex]);
 
   const actions = useMemo(() => ({
     setPage: handleSetPage,
