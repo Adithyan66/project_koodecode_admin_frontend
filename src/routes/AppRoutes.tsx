@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Users from '../pages/Users';
+import UserDetails from '../pages/UserDetails';
 import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import ProblemCreate from '../pages/ProblemCreate';
@@ -26,6 +27,7 @@ export default function AppRoutes() {
 			>
 				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/users" element={<Users />} />
+				<Route path="/users/:userId" element={<UserDetails />} />
 				<Route path="/problems" element={<Problems />} />
 				<Route path="/problems/create" element={<ProblemCreate />} />
 				<Route path="/problems/:slug" element={<ProblemDetail />} />

@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import Table, { type TableColumn } from '../components/Table';
 import Input from '../components/Input';
 import { useUsers } from '../hooks/data/useUsers';
 import type { User } from '../types/user';
 
 export default function Users() {
+	const navigate = useNavigate();
+	
 	const {
 		users,
 		loading,
@@ -23,6 +26,10 @@ export default function Users() {
 			month: 'short',
 			day: 'numeric',
 		});
+	};
+
+	const handleRowClick = (user: User) => {
+		navigate(`/users/${user.id}`);
 	};
 
 	const columns: TableColumn<User>[] = [
@@ -101,6 +108,7 @@ export default function Users() {
 				sortBy={sortBy}
 				sortOrder={sortOrder}
 				rowKey="id"
+				onRowClick={handleRowClick}
 			/>
 
 			{/* Pagination */}

@@ -72,13 +72,17 @@ export function useUsers(): UseUsersResult {
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setDebouncedSearchQuery(searchQuery);
-			if (pagination.page !== 1) {
-				paginationActions.setPage(1);
-			}
 		}, 500);
 
 		return () => clearTimeout(timer);
-	}, [searchQuery, pagination.page, paginationActions]);
+	}, [searchQuery]);
+
+	// Reset to page 1 when search query changes
+	useEffect(() => {
+		if (pagination.page !== 1) {
+			paginationActions.setPage(1);
+		}
+	}, [debouncedSearchQuery]);
 
 	useEffect(() => {
 		fetchUsersData();

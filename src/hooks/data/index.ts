@@ -5,6 +5,7 @@ export { useProblemDetail } from './useProblemDetail';
 export { useContest } from './useContest';
 export { useCreateContest } from './useCreateContest';
 export { useUsers } from './useUsers';
+export { useUserDetail } from './useUserDetail';
 
 // Re-export types
 export type { UseProblemsReturn } from './useProblems';
