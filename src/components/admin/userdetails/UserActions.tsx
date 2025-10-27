@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '../../Card';
 import Button from '../../Button';
 import Modal from '../../Modal';
+import toast from 'react-hot-toast';
 import type { UserDetail } from '../../../types/user';
 import { 
 	Shield, 
@@ -19,7 +20,7 @@ interface UserActionsProps {
 	onUnblockUser: () => Promise<void>;
 	onResetPassword: () => Promise<void>;
 	onDeleteUser: () => Promise<void>;
-	onSendNotification: (message: string) => Promise<void>;
+	onSendMail: (subject: string, message: string) => Promise<void>;
 	onRefresh: () => Promise<void>;
 	actionLoading: boolean;
 	actionError: string | null;
@@ -31,7 +32,7 @@ export default function UserActions({
 	onUnblockUser,
 	onResetPassword,
 	onDeleteUser,
-	onSendNotification,
+	onSendMail,
 	onRefresh,
 	actionLoading,
 	actionError
@@ -40,8 +41,11 @@ export default function UserActions({
 	const [showUnblockModal, setShowUnblockModal] = useState(false);
 	const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const [showNotificationModal, setShowNotificationModal] = useState(false);
-	const [notificationMessage, setNotificationMessage] = useState('');
+	const [showSendMailModal, setShowSendMailModal] = useState(false);
+	const [mailSubject, setMailSubject] = useState('');
+	const [mailMessage, setMailMessage] = useState('');
+	const [isResettingPassword, setIsResettingPassword] = useState(false);
+	const [isSendingMail, setIsSendingMail] = useState(false);
 
 	const handleBlockUser = async () => {
 		await onBlockUser();
@@ -54,8 +58,15 @@ export default function UserActions({
 	};
 
 	const handleResetPassword = async () => {
-		await onResetPassword();
-		setShowResetPasswordModal(false);
+		setIsResettingPassword(true);
+		try {
+			await onResetPassword();
+			setShowResetPasswordModal(false);
+		} catch (error) {
+			// Error is handled by onResetPassword and shown in toast
+		} finally {
+			setIsResettingPassword(false);
+		}
 	};
 
 	const handleDeleteUser = async () => {
@@ -63,11 +74,19 @@ export default function UserActions({
 		setShowDeleteModal(false);
 	};
 
-	const handleSendNotification = async () => {
-		if (notificationMessage.trim()) {
-			await onSendNotification(notificationMessage);
-			setNotificationMessage('');
-			setShowNotificationModal(false);
+	const handleSendMail = async () => {
+		if (mailSubject.trim() && mailMessage.trim()) {
+			setIsSendingMail(true);
+			try {
+				await onSendMail(mailSubject, mailMessage);
+				setMailSubject('');
+				setMailMessage('');
+				setShowSendMailModal(false);
+			} catch (error) {
+				// Error is handled by onSendMail and shown in toast
+			} finally {
+				setIsSendingMail(false);
+			}
 		}
 	};
 
@@ -122,14 +141,14 @@ export default function UserActions({
 							Reset Password
 						</Button>
 
-						{/* Send Notification */}
+						{/* Send Mail */}
 						<Button
-							onClick={() => setShowNotificationModal(true)}
+							onClick={() => setShowSendMailModal(true)}
 							disabled={actionLoading}
 							className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white"
 						>
 							<Mail className="h-4 w-4" />
-							Send Notification
+							Send Mail
 						</Button>
 
 						{/* Delete User */}
@@ -182,13 +201,14 @@ export default function UserActions({
 			{/* Reset Password Modal */}
 			<Modal
 				isOpen={showResetPasswordModal}
-				onClose={() => setShowResetPasswordModal(false)}
+				onClose={() => !isResettingPassword && setShowResetPasswordModal(false)}
 				onConfirm={handleResetPassword}
 				title="Reset Password"
 				message={`Are you sure you want to reset the password for ${user.fullName}? A new password will be generated and sent to their email.`}
 				type="warning"
-				confirmText="Reset Password"
+				confirmText={isResettingPassword ? 'Resetting...' : 'Reset Password'}
 				cancelText="Cancel"
+				actionLoading={isResettingPassword}
 			/>
 
 			{/* Delete User Modal */}
@@ -203,27 +223,37 @@ export default function UserActions({
 				cancelText="Cancel"
 			/>
 
-			{/* Send Notification Modal */}
+			{/* Send Mail Modal */}
 			<Modal
-				isOpen={showNotificationModal}
-				onClose={() => setShowNotificationModal(false)}
-				onConfirm={handleSendNotification}
-				title="Send Notification"
+				isOpen={showSendMailModal}
+				onClose={() => !isSendingMail && setShowSendMailModal(false)}
+				onConfirm={handleSendMail}
+				title="Send Mail"
 				message={
 					<div className="space-y-4">
-						<p>Send a notification to {user.fullName}:</p>
+						<p>Send an email to {user.fullName}:</p>
+						<input
+							type="text"
+							value={mailSubject}
+							onChange={(e) => setMailSubject(e.target.value)}
+							placeholder="Enter subject..."
+							className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+							disabled={isSendingMail}
+						/>
 						<textarea
-							value={notificationMessage}
-							onChange={(e) => setNotificationMessage(e.target.value)}
+							value={mailMessage}
+							onChange={(e) => setMailMessage(e.target.value)}
 							placeholder="Enter your message here..."
-							className="w-full h-24 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+							className="w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+							disabled={isSendingMail}
 						/>
 					</div>
 				}
 				type="info"
-				confirmText="Send Notification"
+				confirmText={isSendingMail ? 'Sending...' : 'Send Mail'}
 				cancelText="Cancel"
 				showCancel={true}
+				actionLoading={isSendingMail}
 			/>
 		</>
 	);

@@ -6,6 +6,8 @@ import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import ProblemCreate from '../pages/ProblemCreate';
 import Contests from '../pages/Contests';
+import CoinPurchases from '../pages/CoinPurchases';
+import PaymentDetails from '../pages/PaymentDetails';
 import Settings from '../pages/Settings';
 import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
@@ -32,6 +34,8 @@ export default function AppRoutes() {
 				<Route path="/problems/create" element={<ProblemCreate />} />
 				<Route path="/problems/:slug" element={<ProblemDetail />} />
 				<Route path="/contests" element={<Contests />} />
+				<Route path="/payments" element={<CoinPurchases />} />
+				<Route path="/payments/:id" element={<PaymentDetails />} />
 				<Route
 					path="/settings"
 					element={

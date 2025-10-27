@@ -1,22 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader } from '../../Card';
-import { 
-	ChevronDown, 
-	ChevronRight, 
-	Trophy, 
-	Code, 
-	DollarSign, 
-	ShoppingBag, 
-	Users, 
-	Home, 
-	Award, 
+import Pagination from '../../Pagination';
+import {
+	ChevronDown,
+	ChevronRight,
+	Trophy,
+	Code,
+	DollarSign,
+	ShoppingBag,
+	Users,
+	Home,
+	Award,
 	BarChart3,
 	Loader2,
-	ChevronLeft,
-	ChevronRight as ChevronRightIcon,
 	Calendar,
 	Users as UsersIcon,
-	Coins
+	Coins,
+	X
 } from 'lucide-react';
 import { imageKitService } from '../../../services/ImageKitService';
 
@@ -29,26 +29,28 @@ interface CollapsibleSectionProps {
 	onToggle?: () => void;
 }
 
-function CollapsibleSection({ 
-	title, 
-	icon: Icon, 
-	children, 
-	isLoading = false, 
+function CollapsibleSection({
+	title,
+	icon: Icon,
+	children,
+	isLoading = false,
 	error = null,
-	onToggle 
+	onToggle
 }: CollapsibleSectionProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
 
 	const handleToggle = () => {
+		const wasExpanded = isExpanded;
 		setIsExpanded(!isExpanded);
-		if (onToggle) {
+		// Only call onToggle when opening the section, not when closing
+		if (!wasExpanded && onToggle) {
 			onToggle();
 		}
 	};
 
 	return (
 		<Card>
-			<CardHeader 
+			<CardHeader
 				className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
 				onClick={handleToggle}
 			>
@@ -97,7 +99,7 @@ interface ExtendedDataSectionsProps {
 	roomData: any;
 	achievementData: any;
 	analyticsData: any;
-	
+
 	// Loading states
 	loadingContestData: boolean;
 	loadingSubmissionData: boolean;
@@ -107,7 +109,7 @@ interface ExtendedDataSectionsProps {
 	loadingRoomData: boolean;
 	loadingAchievementData: boolean;
 	loadingAnalyticsData: boolean;
-	
+
 	// Error states
 	contestDataError: string | null;
 	submissionDataError: string | null;
@@ -117,13 +119,25 @@ interface ExtendedDataSectionsProps {
 	roomDataError: string | null;
 	achievementDataError: string | null;
 	analyticsDataError: string | null;
-	
+
 	// Pagination
-	contestPagination: any;
-	submissionPagination: any;
-	financialPagination: any;
-	roomPagination: any;
-	
+	contestPagination: {
+		state: any;
+		actions: any;
+	};
+	submissionPagination: {
+		state: any;
+		actions: any;
+	};
+	financialPagination: {
+		coin: { state: any; actions: any };
+		payment: { state: any; actions: any };
+	};
+	roomPagination: {
+		state: any;
+		actions: any;
+	};
+
 	// Actions
 	onLoadContestData: () => void;
 	onLoadSubmissionData: () => void;
@@ -135,40 +149,54 @@ interface ExtendedDataSectionsProps {
 	onLoadAnalyticsData: () => void;
 }
 
-// Pagination Component
-function PaginationControls({ pagination, apiPagination }: { pagination: any; apiPagination?: any }) {
-	if (!pagination || !pagination.state) return null;
-	
-	const { page: currentPage, hasNextPage, hasPreviousPage } = pagination.state;
-	const { goToNextPage, goToPreviousPage } = pagination.actions;
-	
-	// Use API pagination if available, otherwise calculate from state
-	const paginationInfo = apiPagination || {
-		page: currentPage,
-		totalPages: pagination.state.totalPages,
-		total: pagination.state.totalCount
-	};
-	
+// Code Modal Component
+function CodeModal({
+	isOpen,
+	onClose,
+	sourceCode,
+	language,
+	problemTitle
+}: {
+	isOpen: boolean;
+	onClose: () => void;
+	sourceCode: string;
+	language: string;
+	problemTitle: string;
+}) {
+	if (!isOpen) return null;
+
 	return (
-		<div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-			<div className="text-sm text-gray-600 dark:text-gray-400">
-				Showing page {paginationInfo.page} of {paginationInfo.totalPages} ({paginationInfo.total} total items)
-			</div>
-			<div className="flex gap-2">
-				<button
-					onClick={goToPreviousPage}
-					disabled={!hasPreviousPage}
-					className="px-3 py-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800"
-				>
-					<ChevronLeft className="h-4 w-4" />
-				</button>
-				<button
-					onClick={goToNextPage}
-					disabled={!hasNextPage}
-					className="px-3 py-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800"
-				>
-					<ChevronRightIcon className="h-4 w-4" />
-				</button>
+		<div className="fixed inset-0 z-50 flex items-center justify-center">
+			{/* Backdrop */}
+			<div
+				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+				onClick={onClose}
+			/>
+
+			{/* Modal Content */}
+			<div className="relative z-10 mx-4 w-full max-w-4xl max-h-[90vh] rounded-lg bg-white shadow-xl dark:bg-gray-800 flex flex-col">
+				{/* Header */}
+				<div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
+					<div>
+						<h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+							Source Code - {problemTitle}
+						</h3>
+						<p className="text-sm text-gray-500 dark:text-gray-400">Language: {language}</p>
+					</div>
+					<button
+						onClick={onClose}
+						className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700"
+					>
+						<X className="h-5 w-5" />
+					</button>
+				</div>
+
+				{/* Code Body */}
+				<div className="flex-1 overflow-auto p-4">
+					<pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+						<code>{sourceCode}</code>
+					</pre>
+				</div>
 			</div>
 		</div>
 	);
@@ -212,9 +240,38 @@ export default function ExtendedDataSections({
 	onLoadAchievementData,
 	onLoadAnalyticsData
 }: ExtendedDataSectionsProps) {
+	// State for code modal
+	const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
+
+	const handleShowCode = (submission: any) => {
+		setSelectedSubmission(submission);
+	};
+
+	const handleCloseCode = useCallback(() => {
+		setSelectedSubmission(null);
+	}, []);
+
+	// Handle escape key for modal
+	useEffect(() => {
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				handleCloseCode();
+			}
+		};
+
+		if (selectedSubmission !== null) {
+			document.addEventListener('keydown', handleEscape);
+			document.body.style.overflow = 'hidden';
+		}
+
+		return () => {
+			document.removeEventListener('keydown', handleEscape);
+			document.body.style.overflow = 'unset';
+		};
+	}, [selectedSubmission, handleCloseCode]);
 	const renderContestData = () => {
 		if (!contestData) return <div>No contest data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -235,7 +292,7 @@ export default function ExtendedDataSections({
 						<p className="text-sm text-gray-600 dark:text-gray-400">Total Rating</p>
 					</div>
 				</div>
-				
+
 				{contestData.contests && contestData.contests.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-3 text-lg">Contests</h4>
@@ -250,7 +307,7 @@ export default function ExtendedDataSections({
 											className="w-30 h-20 object-cover rounded-lg flex-shrink-0"
 										/>
 									)}
-									
+
 									{/* Details */}
 									<div className="flex-1 min-w-0">
 										<div className="flex items-start justify-between gap-4 mb-2">
@@ -264,7 +321,7 @@ export default function ExtendedDataSections({
 												</div>
 											)}
 										</div>
-										
+
 										<div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
 											{contest.contestDate && (
 												<div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
@@ -274,36 +331,35 @@ export default function ExtendedDataSections({
 													</span>
 												</div>
 											)}
-											
+
 											{contest.totalParticipants !== undefined && (
 												<div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
 													<UsersIcon className="h-3.5 w-3.5" />
 													<span>{contest.totalParticipants} participants</span>
 												</div>
 											)}
-											
+
 											{contest.ratingChange !== undefined && (
 												<div className="flex items-center gap-1.5">
 													<span className="text-gray-600 dark:text-gray-400">Rating:</span>
-													<span className={`font-medium ${
-														contest.ratingChange > 0 
-															? 'text-green-600 dark:text-green-400' 
-															: contest.ratingChange < 0 
-															? 'text-red-600 dark:text-red-400' 
-															: 'text-gray-600 dark:text-gray-400'
-													}`}>
+													<span className={`font-medium ${contest.ratingChange > 0
+															? 'text-green-600 dark:text-green-400'
+															: contest.ratingChange < 0
+																? 'text-red-600 dark:text-red-400'
+																: 'text-gray-600 dark:text-gray-400'
+														}`}>
 														{contest.ratingChange > 0 ? '+' : ''}{contest.ratingChange}
 													</span>
 												</div>
 											)}
-											
+
 											{contest.coinsEarned !== undefined && (
 												<div className="flex items-center gap-1.5 text-yellow-600 dark:text-yellow-400">
 													<Coins className="h-3.5 w-3.5" />
 													<span className="font-medium">{contest.coinsEarned} coins</span>
 												</div>
 											)}
-											
+
 											{contest.participatedAt && (
 												<div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
 													<span className="text-xs">
@@ -316,7 +372,7 @@ export default function ExtendedDataSections({
 								</div>
 							))}
 						</div>
-						<PaginationControls pagination={contestPagination} apiPagination={contestData.pagination} />
+						<Pagination pagination={contestPagination.state} paginationActions={contestPagination.actions} />
 					</div>
 				)}
 			</div>
@@ -325,7 +381,7 @@ export default function ExtendedDataSections({
 
 	const renderSubmissionData = () => {
 		if (!submissionData) return <div>No submission data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -342,7 +398,7 @@ export default function ExtendedDataSections({
 						<p className="text-sm text-gray-600 dark:text-gray-400">Rejected</p>
 					</div>
 				</div>
-				
+
 				{submissionData.submissionsByLanguage && submissionData.submissionsByLanguage.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Submissions by Language</h4>
@@ -358,24 +414,61 @@ export default function ExtendedDataSections({
 						</div>
 					</div>
 				)}
-				
+
 				{submissionData.submissions && submissionData.submissions.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Submissions</h4>
-						<div className="space-y-2">
+						<div className="space-y-3">
 							{submissionData.submissions.map((submission: any, index: number) => (
-								<div key={index} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
-									<div>
-										<span className="font-medium">{submission.problemTitle}</span>
-										<p className="text-sm text-gray-600 dark:text-gray-400">{submission.language}</p>
+								<div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+									<div className="flex items-start justify-between gap-4 mb-2">
+										<div className="flex-1 min-w-0">
+											<h5 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
+												{submission.problemTitle}
+											</h5>
+											<p className="text-sm text-gray-600 dark:text-gray-400">{submission.language}</p>
+										</div>
+										<div className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${submission.status === 'accepted'
+												? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+												: submission.status === 'error'
+													? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+													: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+											}`}>
+											{submission.status}
+										</div>
 									</div>
-									<div className="text-sm text-gray-600 dark:text-gray-400">
-										{submission.status} | {new Date(submission.submittedAt).toLocaleDateString()}
+
+									<div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-2 text-sm">
+										<div className="flex flex-col">
+											<span className="text-xs text-gray-500 dark:text-gray-400">Score</span>
+											<span className="font-medium text-gray-900 dark:text-gray-100">{submission.score ?? 0}</span>
+										</div>
+										<div className="flex flex-col">
+											<span className="text-xs text-gray-500 dark:text-gray-400">Execution Time</span>
+											<span className="font-medium text-gray-900 dark:text-gray-100">{submission.totalExecutionTime ?? 0} ms</span>
+										</div>
+										<div className="flex flex-col">
+											<span className="text-xs text-gray-500 dark:text-gray-400">Memory Usage</span>
+											<span className="font-medium text-gray-900 dark:text-gray-100">{submission.maxMemoryUsage ?? 0} MB</span>
+										</div>
+										<div className="flex flex-col">
+											<span className="text-xs text-gray-500 dark:text-gray-400">Submitted</span>
+											<span className="font-medium text-gray-900 dark:text-gray-100">{new Date(submission.submittedAt).toLocaleDateString()}</span>
+										</div>
+										<div className="flex flex-col">
+											<button
+												onClick={() => handleShowCode(submission)}
+												className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+											>
+												<Code className="h-4 w-4" />
+												View Code
+											</button>
+										</div>
 									</div>
 								</div>
 							))}
 						</div>
-						<PaginationControls pagination={submissionPagination} apiPagination={submissionData.pagination} />
+						<Pagination pagination={submissionPagination.state} paginationActions={submissionPagination.actions} />
 					</div>
 				)}
 			</div>
@@ -384,20 +477,20 @@ export default function ExtendedDataSections({
 
 	const renderFinancialData = () => {
 		if (!financialData) return <div>No financial data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 gap-4">
 					<div className="text-center">
-						<p className="text-2xl font-bold text-red-600">${financialData.totalSpent}</p>
+						<p className="text-2xl font-bold text-red-600">{financialData.totalSpent}</p>
 						<p className="text-sm text-gray-600 dark:text-gray-400">Total Spent</p>
 					</div>
 					<div className="text-center">
-						<p className="text-2xl font-bold text-green-600">${financialData.totalEarned}</p>
+						<p className="text-2xl font-bold text-green-600">{financialData.totalEarned}</p>
 						<p className="text-sm text-gray-600 dark:text-gray-400">Total Earned</p>
 					</div>
 				</div>
-				
+
 				{financialData.coinTransactions && financialData.coinTransactions.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Coin Transactions</h4>
@@ -411,10 +504,10 @@ export default function ExtendedDataSections({
 								</div>
 							))}
 						</div>
-						<PaginationControls pagination={financialPagination?.coin} apiPagination={financialData.coinTransactionsPagination} />
+						<Pagination pagination={financialPagination.coin.state} paginationActions={financialPagination.coin.actions} />
 					</div>
 				)}
-				
+
 				{financialData.paymentHistory && financialData.paymentHistory.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Payment History</h4>
@@ -423,12 +516,12 @@ export default function ExtendedDataSections({
 								<div key={index} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
 									<span className="font-medium">Payment {payment.paymentId}</span>
 									<div className="text-sm text-gray-600 dark:text-gray-400">
-										${payment.amount} {payment.currency} - {payment.status}
+										{payment.amount} {payment.currency} - {payment.status}
 									</div>
 								</div>
 							))}
 						</div>
-						<PaginationControls pagination={financialPagination?.payment} apiPagination={financialData.paymentHistoryPagination} />
+						<Pagination pagination={financialPagination.payment.state} paginationActions={financialPagination.payment.actions} />
 					</div>
 				)}
 			</div>
@@ -437,7 +530,7 @@ export default function ExtendedDataSections({
 
 	const renderStoreData = () => {
 		if (!storeData) return <div>No store data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 gap-4">
@@ -450,7 +543,7 @@ export default function ExtendedDataSections({
 						<p className="text-sm text-gray-600 dark:text-gray-400">Items in Inventory</p>
 					</div>
 				</div>
-				
+
 				{storeData.purchasedItems && storeData.purchasedItems.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Recent Purchases</h4>
@@ -472,7 +565,7 @@ export default function ExtendedDataSections({
 
 	const renderSocialData = () => {
 		if (!socialData) return <div>No social data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 gap-4">
@@ -485,7 +578,7 @@ export default function ExtendedDataSections({
 						<p className="text-sm text-gray-600 dark:text-gray-400">Following</p>
 					</div>
 				</div>
-				
+
 				{socialData.socialConnections && socialData.socialConnections.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Social Connections</h4>
@@ -507,7 +600,7 @@ export default function ExtendedDataSections({
 
 	const renderRoomData = () => {
 		if (!roomData) return <div>No room data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -528,7 +621,7 @@ export default function ExtendedDataSections({
 						<p className="text-sm text-gray-600 dark:text-gray-400">Successful</p>
 					</div>
 				</div>
-				
+
 				{roomData.rooms && roomData.rooms.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Rooms</h4>
@@ -542,7 +635,7 @@ export default function ExtendedDataSections({
 								</div>
 							))}
 						</div>
-						<PaginationControls pagination={roomPagination} apiPagination={roomData.roomsPagination} />
+						<Pagination pagination={roomPagination.state} paginationActions={roomPagination.actions} />
 					</div>
 				)}
 			</div>
@@ -551,14 +644,14 @@ export default function ExtendedDataSections({
 
 	const renderAchievementData = () => {
 		if (!achievementData) return <div>No achievement data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				<div className="text-center">
 					<p className="text-3xl font-bold text-yellow-600">{achievementData.totalBadges}</p>
 					<p className="text-sm text-gray-600 dark:text-gray-400">Total Badges</p>
 				</div>
-				
+
 				{achievementData.achievementProgress && achievementData.achievementProgress.length > 0 && (
 					<div>
 						<h4 className="font-semibold mb-2">Achievement Progress</h4>
@@ -572,7 +665,7 @@ export default function ExtendedDataSections({
 										</span>
 									</div>
 									<div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-										<div 
+										<div
 											className="bg-blue-600 h-2 rounded-full transition-all duration-300"
 											style={{ width: `${(achievement.progress / achievement.target) * 100}%` }}
 										></div>
@@ -591,7 +684,7 @@ export default function ExtendedDataSections({
 
 	const renderAnalyticsData = () => {
 		if (!analyticsData) return <div>No analytics data available</div>;
-		
+
 		return (
 			<div className="space-y-4">
 				{analyticsData.problemSolvingPatterns && (
@@ -607,7 +700,7 @@ export default function ExtendedDataSections({
 								<p className="font-medium">{analyticsData.problemSolvingPatterns.averageSolveTime} minutes</p>
 							</div>
 						</div>
-						
+
 						{analyticsData.problemSolvingPatterns.preferredLanguages && (
 							<div className="mt-4">
 								<p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Preferred Languages</p>
@@ -707,6 +800,15 @@ export default function ExtendedDataSections({
 			>
 				{renderAnalyticsData()}
 			</CollapsibleSection>
+
+			{/* Code Modal */}
+			<CodeModal
+				isOpen={selectedSubmission !== null}
+				onClose={handleCloseCode}
+				sourceCode={selectedSubmission?.sourceCode || ''}
+				language={selectedSubmission?.language || ''}
+				problemTitle={selectedSubmission?.problemTitle || ''}
+			/>
 		</div>
 	);
 }

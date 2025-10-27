@@ -85,7 +85,7 @@ export async function unblockUser(userId: string): Promise<{ success: boolean; m
 }
 
 export async function resetUserPassword(userId: string): Promise<{ success: boolean; message: string }> {
-	const { data } = await axiosInstance.post(`/admin/users/${userId}/reset-password`);
+	const { data } = await axiosInstance.patch(`/admin/users/${userId}/reset-password`);
 	return data;
 }
 
@@ -94,7 +94,7 @@ export async function deleteUserAccount(userId: string): Promise<{ success: bool
 	return data;
 }
 
-export async function sendUserNotification(userId: string, message: string): Promise<{ success: boolean; message: string }> {
-	const { data } = await axiosInstance.post(`/admin/users/${userId}/notify`, { message });
+export async function sendUserMail(userId: string, subject: string, message: string): Promise<{ success: boolean; message: string }> {
+	const { data } = await axiosInstance.post(`/admin/users/${userId}/send-mail`, { subject, message });
 	return data;
 }

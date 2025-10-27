@@ -12,6 +12,7 @@ interface ModalProps {
   cancelText?: string;
   showCancel?: boolean;
   type?: 'info' | 'warning' | 'error' | 'success';
+  actionLoading?: boolean;
 }
 
 export default function Modal({
@@ -23,12 +24,13 @@ export default function Modal({
   confirmText = 'OK',
   cancelText = 'Cancel',
   showCancel = true,
-  type = 'info'
+  type = 'info',
+  actionLoading = false
 }: ModalProps) {
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape' && isOpen && !actionLoading) {
         onClose();
       }
     };
@@ -43,7 +45,7 @@ export default function Modal({
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, actionLoading]);
 
   if (!isOpen) return null;
 
@@ -72,7 +74,7 @@ export default function Modal({
       {/* Backdrop with transparent background and black shade */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={actionLoading ? undefined : onClose}
       />
       
       {/* Modal Content */}
@@ -84,7 +86,8 @@ export default function Modal({
           </h3>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700"
+            disabled={actionLoading}
+            className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <X className="h-5 w-5" />
           </button>
@@ -103,6 +106,7 @@ export default function Modal({
             <Button
               variant="secondary"
               onClick={onClose}
+              disabled={actionLoading}
             >
               {cancelText}
             </Button>
@@ -110,6 +114,7 @@ export default function Modal({
           <Button
             variant="primary"
             onClick={handleConfirm}
+            disabled={actionLoading}
             className={type === 'error' ? 'bg-red-600 hover:bg-red-700' : ''}
           >
             {confirmText}

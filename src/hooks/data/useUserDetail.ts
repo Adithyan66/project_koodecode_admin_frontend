@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import {
 	fetchUserDetail,
 	fetchUserContestData,
@@ -13,7 +14,7 @@ import {
 	unblockUser,
 	resetUserPassword,
 	deleteUserAccount,
-	sendUserNotification
+	sendUserMail
 } from '../../api/users';
 import type {
 	UserDetail,
@@ -90,7 +91,7 @@ interface UseUserDetailResult {
 	handleUnblockUser: () => Promise<void>;
 	handleResetPassword: () => Promise<void>;
 	handleDeleteUser: () => Promise<void>;
-	handleSendNotification: (message: string) => Promise<void>;
+	handleSendMail: (subject: string, message: string) => Promise<void>;
 	
 	// Action states
 	actionLoading: boolean;
@@ -112,6 +113,12 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 	const [roomData, setRoomData] = useState<UserRoomData | null>(null);
 	const [achievementData, setAchievementData] = useState<UserAchievementData | null>(null);
 	const [analyticsData, setAnalyticsData] = useState<UserAnalyticsData | null>(null);
+	
+	// Flags to track if extended data has been loaded
+	const [hasLoadedContestData, setHasLoadedContestData] = useState(false);
+	const [hasLoadedSubmissionData, setHasLoadedSubmissionData] = useState(false);
+	const [hasLoadedFinancialData, setHasLoadedFinancialData] = useState(false);
+	const [hasLoadedRoomData, setHasLoadedRoomData] = useState(false);
 	
 	// Loading states for extended data
 	const [loadingContestData, setLoadingContestData] = useState(false);
@@ -137,12 +144,19 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 	const [actionLoading, setActionLoading] = useState(false);
 	const [actionError, setActionError] = useState<string | null>(null);
 	
+	// TotalCount state for each paginated section
+	const [contestTotalCount, setContestTotalCount] = useState(0);
+	const [submissionTotalCount, setSubmissionTotalCount] = useState(0);
+	const [coinTotalCount, setCoinTotalCount] = useState(0);
+	const [paymentTotalCount, setPaymentTotalCount] = useState(0);
+	const [roomTotalCount, setRoomTotalCount] = useState(0);
+	
 	// Pagination hooks
-	const contestPagination = usePagination({ initialPage: 1, initialLimit: 10 });
-	const submissionPagination = usePagination({ initialPage: 1, initialLimit: 10 });
-	const coinPagination = usePagination({ initialPage: 1, initialLimit: 10 });
-	const paymentPagination = usePagination({ initialPage: 1, initialLimit: 10 });
-	const roomPagination = usePagination({ initialPage: 1, initialLimit: 10 });
+	const contestPagination = usePagination({ initialPage: 1, initialLimit: 10, totalCount: contestTotalCount });
+	const submissionPagination = usePagination({ initialPage: 1, initialLimit: 5, totalCount: submissionTotalCount });
+	const coinPagination = usePagination({ initialPage: 1, initialLimit: 10, totalCount: coinTotalCount });
+	const paymentPagination = usePagination({ initialPage: 1, initialLimit: 10, totalCount: paymentTotalCount });
+	const roomPagination = usePagination({ initialPage: 1, initialLimit: 10, totalCount: roomTotalCount });
 	
 	// Fetch main user data
 	const fetchUserData = async () => {
@@ -171,6 +185,11 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 				limit: contestPagination.state.limit
 			});
 			setContestData(response.data);
+			setHasLoadedContestData(true);
+			// Update totalCount from API response
+			if (response.data.pagination) {
+				setContestTotalCount(response.data.pagination.total);
+			}
 		} catch (err: any) {
 			setContestDataError(err?.response?.data?.message || 'Failed to fetch contest data');
 		} finally {
@@ -188,6 +207,11 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 				limit: submissionPagination.state.limit
 			});
 			setSubmissionData(response.data);
+			setHasLoadedSubmissionData(true);
+			// Update totalCount from API response
+			if (response.data.pagination) {
+				setSubmissionTotalCount(response.data.pagination.total);
+			}
 		} catch (err: any) {
 			setSubmissionDataError(err?.response?.data?.message || 'Failed to fetch submission data');
 		} finally {
@@ -207,6 +231,14 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 				paymentLimit: paymentPagination.state.limit
 			});
 			setFinancialData(response.data);
+			setHasLoadedFinancialData(true);
+			// Update totalCount from API response
+			if (response.data.coinTransactionsPagination) {
+				setCoinTotalCount(response.data.coinTransactionsPagination.total);
+			}
+			if (response.data.paymentHistoryPagination) {
+				setPaymentTotalCount(response.data.paymentHistoryPagination.total);
+			}
 		} catch (err: any) {
 			setFinancialDataError(err?.response?.data?.message || 'Failed to fetch financial data');
 		} finally {
@@ -252,6 +284,11 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 				limit: roomPagination.state.limit
 			});
 			setRoomData(response.data);
+			setHasLoadedRoomData(true);
+			// Update totalCount from API response
+			if (response.data.roomsPagination) {
+				setRoomTotalCount(response.data.roomsPagination.total);
+			}
 		} catch (err: any) {
 			setRoomDataError(err?.response?.data?.message || 'Failed to fetch room data');
 		} finally {
@@ -322,8 +359,11 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 		
 		try {
 			await resetUserPassword(userId);
+			toast.success('Password reset successfully! A new password has been sent to the user\'s email.');
 		} catch (err: any) {
-			setActionError(err?.response?.data?.message || 'Failed to reset password');
+			const errorMessage = err?.response?.data?.message || 'Failed to reset password';
+			setActionError(errorMessage);
+			toast.error(errorMessage);
 		} finally {
 			setActionLoading(false);
 		}
@@ -342,14 +382,17 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 		}
 	};
 	
-	const handleSendNotification = async (message: string) => {
+	const handleSendMail = async (subject: string, message: string) => {
 		setActionLoading(true);
 		setActionError(null);
 		
 		try {
-			await sendUserNotification(userId, message);
+			const response = await sendUserMail(userId, subject, message);
+			toast.success(response.message || 'Mail sent successfully!');
 		} catch (err: any) {
-			setActionError(err?.response?.data?.message || 'Failed to send notification');
+			const errorMessage = err?.response?.data?.message || 'Failed to send mail';
+			setActionError(errorMessage);
+			toast.error(errorMessage);
 		} finally {
 			setActionLoading(false);
 		}
@@ -379,27 +422,31 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 	
 	// Refetch data when pagination changes
 	useEffect(() => {
-		if (contestData !== null) {
+		if (hasLoadedContestData && userId) {
 			fetchContestData();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contestPagination.state.page, contestPagination.state.limit]);
 	
 	useEffect(() => {
-		if (submissionData !== null) {
+		if (hasLoadedSubmissionData && userId) {
 			fetchSubmissionData();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [submissionPagination.state.page, submissionPagination.state.limit]);
 	
 	useEffect(() => {
-		if (financialData !== null) {
+		if (hasLoadedFinancialData && userId) {
 			fetchFinancialData();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [coinPagination.state.page, coinPagination.state.limit, paymentPagination.state.page, paymentPagination.state.limit]);
 	
 	useEffect(() => {
-		if (roomData !== null) {
+		if (hasLoadedRoomData && userId) {
 			fetchRoomData();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [roomPagination.state.page, roomPagination.state.limit]);
 	
 	return {
@@ -464,7 +511,7 @@ export function useUserDetail(userId: string): UseUserDetailResult {
 		handleUnblockUser,
 		handleResetPassword,
 		handleDeleteUser,
-		handleSendNotification,
+		handleSendMail,
 		
 		// Action states
 		actionLoading,

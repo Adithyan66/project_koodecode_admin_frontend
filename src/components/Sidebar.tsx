@@ -42,6 +42,9 @@ export default function Sidebar() {
 				<NavLink to="/contests" className={navItemClass}>
 					<span className="truncate">Contests</span>
 				</NavLink>
+				<NavLink to="/payments" className={navItemClass}>
+					<span className="truncate">Payments</span>
+				</NavLink>
 				{role === 'superadmin' && (
 					<NavLink to="/settings" className={navItemClass}>
 						<span className="truncate">Settings</span>

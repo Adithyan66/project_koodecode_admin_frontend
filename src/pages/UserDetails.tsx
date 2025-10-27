@@ -73,7 +73,7 @@ export default function UserDetails() {
 		handleUnblockUser,
 		handleResetPassword,
 		handleDeleteUser,
-		handleSendNotification,
+		handleSendMail,
 		
 		// Action states
 		actionLoading,
@@ -145,12 +145,12 @@ export default function UserDetails() {
 					<UserStats user={user} />
 					<UserActions
 						user={user}
-						onBlockUser={handleBlockUser}
-						onUnblockUser={handleUnblockUser}
-						onResetPassword={handleResetPassword}
-						onDeleteUser={handleDeleteUser}
-						onSendNotification={handleSendNotification}
-						onRefresh={refetchAllData}
+					onBlockUser={handleBlockUser}
+					onUnblockUser={handleUnblockUser}
+					onResetPassword={handleResetPassword}
+					onDeleteUser={handleDeleteUser}
+					onSendMail={handleSendMail}
+					onRefresh={refetchAllData}
 						actionLoading={actionLoading}
 						actionError={actionError}
 					/>
