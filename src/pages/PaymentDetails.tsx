@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw, XCircle } from 'lucide-react';
 import { Card, CardContent } from '../components/Card';
-import Button from '../components/Button';
 import { useCoinPurchaseDetail } from '../hooks';
 import {
 	UserInfoCard,
@@ -11,7 +10,6 @@ import {
 	ActionsSection,
 	StaleWarningBanner,
 	NotesHistoryCard,
-	RefundDetailsCard,
 } from '../components/admin/coinpaymentdetails';
 
 export default function PaymentDetails() {

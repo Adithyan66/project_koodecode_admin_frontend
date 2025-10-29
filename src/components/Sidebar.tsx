@@ -1,5 +1,15 @@
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+	LayoutDashboard,
+	Users,
+	FileCode,
+	Trophy,
+	Video,
+	CreditCard,
+	Settings,
+	Menu,
+} from 'lucide-react';
 import type { RootState } from '../redux/store';
 import { toggleSidebar } from '../redux/slices/uiSlice';
 
@@ -26,28 +36,38 @@ export default function Sidebar() {
 					onClick={() => dispatch(toggleSidebar())}
 					aria-label="Toggle sidebar"
 				>
-					☰
+					<Menu className="h-5 w-5" />
 				</button>
 			</div>
 			<nav className="mt-2 space-y-1 px-2">
 				<NavLink to="/dashboard" className={navItemClass}>
-					<span className="truncate">Dashboard</span>
+					<LayoutDashboard className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Dashboard</span>}
 				</NavLink>
 				<NavLink to="/users" className={navItemClass}>
-					<span className="truncate">Users</span>
+					<Users className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Users</span>}
 				</NavLink>
 				<NavLink to="/problems" className={navItemClass}>
-					<span className="truncate">Problems</span>
+					<FileCode className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Problems</span>}
 				</NavLink>
 				<NavLink to="/contests" className={navItemClass}>
-					<span className="truncate">Contests</span>
+					<Trophy className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Contests</span>}
+				</NavLink>
+				<NavLink to="/rooms" className={navItemClass}>
+					<Video className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Rooms</span>}
 				</NavLink>
 				<NavLink to="/payments" className={navItemClass}>
-					<span className="truncate">Payments</span>
+					<CreditCard className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Payments</span>}
 				</NavLink>
 				{role === 'superadmin' && (
 					<NavLink to="/settings" className={navItemClass}>
-						<span className="truncate">Settings</span>
+						<Settings className="h-5 w-5" />
+						{isSidebarOpen && <span className="truncate">Settings</span>}
 					</NavLink>
 				)}
 			</nav>

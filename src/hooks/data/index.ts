@@ -8,6 +8,8 @@ export { useUsers } from './useUsers';
 export { useUserDetail } from './useUserDetail';
 export { useCoinPurchases } from './useCoinPurchases';
 export { useCoinPurchaseDetail } from './useCoinPurchaseDetail';
+export { useRooms } from './useRooms';
+export { useRoomDetail } from './useRoomDetail';
 
 // Re-export types
 export type { UseProblemsReturn } from './useProblems';
