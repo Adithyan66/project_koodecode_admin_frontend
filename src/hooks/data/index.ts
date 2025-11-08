@@ -10,6 +10,9 @@ export { useCoinPurchases } from './useCoinPurchases';
 export { useCoinPurchaseDetail } from './useCoinPurchaseDetail';
 export { useRooms } from './useRooms';
 export { useRoomDetail } from './useRoomDetail';
+export { useStoreItems } from './useStoreItems';
+export { useSubmissionDetail } from './useSubmissionDetail';
+export { useSubmissions } from './useSubmissions';
 
 // Re-export types
 export type { UseProblemsReturn } from './useProblems';

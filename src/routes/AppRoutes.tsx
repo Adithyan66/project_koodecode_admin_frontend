@@ -6,10 +6,13 @@ import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import ProblemCreate from '../pages/ProblemCreate';
 import Contests from '../pages/Contests';
+import Submissions from '../pages/Submissions';
+import SubmissionDetail from '../pages/SubmissionDetail';
 import CoinPurchases from '../pages/CoinPurchases';
 import PaymentDetails from '../pages/PaymentDetails';
 import RoomsList from '../pages/RoomsList';
 import RoomDetail from '../pages/RoomDetail';
+import StoreManagement from '../pages/StoreManagement';
 import Settings from '../pages/Settings';
 import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
@@ -36,8 +39,11 @@ export default function AppRoutes() {
 				<Route path="/problems/create" element={<ProblemCreate />} />
 				<Route path="/problems/:slug" element={<ProblemDetail />} />
 				<Route path="/contests" element={<Contests />} />
+				<Route path="/submissions" element={<Submissions />} />
 				<Route path="/rooms" element={<RoomsList />} />
 				<Route path="/rooms/:roomId" element={<RoomDetail />} />
+				<Route path="/submissions/:submissionId" element={<SubmissionDetail />} />
+				<Route path="/store" element={<StoreManagement />} />
 				<Route path="/payments" element={<CoinPurchases />} />
 				<Route path="/payments/:id" element={<PaymentDetails />} />
 				<Route
@@ -53,5 +59,3 @@ export default function AppRoutes() {
 		</Routes>
 	);
 }
-
-

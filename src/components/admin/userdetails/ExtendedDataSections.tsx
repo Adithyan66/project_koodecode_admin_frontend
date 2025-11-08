@@ -761,7 +761,7 @@ export default function ExtendedDataSections({
 				{renderStoreData()}
 			</CollapsibleSection>
 
-			<CollapsibleSection
+			{/* <CollapsibleSection
 				title="Social Connection Data"
 				icon={Users}
 				isLoading={loadingSocialData}
@@ -769,7 +769,7 @@ export default function ExtendedDataSections({
 				onToggle={onLoadSocialData}
 			>
 				{renderSocialData()}
-			</CollapsibleSection>
+			</CollapsibleSection> */}
 
 			<CollapsibleSection
 				title="Room & Collaboration Data"
@@ -781,7 +781,7 @@ export default function ExtendedDataSections({
 				{renderRoomData()}
 			</CollapsibleSection>
 
-			<CollapsibleSection
+			{/* <CollapsibleSection
 				title="Achievements & Badge Data"
 				icon={Award}
 				isLoading={loadingAchievementData}
@@ -789,9 +789,9 @@ export default function ExtendedDataSections({
 				onToggle={onLoadAchievementData}
 			>
 				{renderAchievementData()}
-			</CollapsibleSection>
+			</CollapsibleSection> */}
 
-			<CollapsibleSection
+			{/* <CollapsibleSection
 				title="Activity & Analytics Data"
 				icon={BarChart3}
 				isLoading={loadingAnalyticsData}
@@ -799,7 +799,7 @@ export default function ExtendedDataSections({
 				onToggle={onLoadAnalyticsData}
 			>
 				{renderAnalyticsData()}
-			</CollapsibleSection>
+			</CollapsibleSection> */}
 
 			{/* Code Modal */}
 			<CodeModal

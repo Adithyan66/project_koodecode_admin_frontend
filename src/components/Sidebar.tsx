@@ -1,17 +1,22 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	LayoutDashboard,
 	Users,
 	FileCode,
 	Trophy,
+	FileText,
 	Video,
+	ShoppingCart,
 	CreditCard,
 	Settings,
 	Menu,
 } from 'lucide-react';
 import type { RootState } from '../redux/store';
 import { toggleSidebar } from '../redux/slices/uiSlice';
+import Button from './Button';
+import axiosInstance from '../api/axios';
+import { logout } from '../redux/slices/authSlice';
 
 const navItemClass = ({ isActive }: { isActive: boolean }) =>
 	`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${
@@ -22,6 +27,14 @@ export default function Sidebar() {
 	const dispatch = useDispatch();
 	const isSidebarOpen = useSelector((s: RootState) => s.ui.isSidebarOpen);
 	const role = useSelector((s: RootState) => s.auth.user?.role);
+	const navigate = useNavigate()
+	
+
+	async function handleLogout (){
+		const res = await axiosInstance.post('auth/logout')
+		dispatch(logout())
+		navigate('/login')
+	}
 
 	return (
 		<aside
@@ -56,14 +69,25 @@ export default function Sidebar() {
 					<Trophy className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Contests</span>}
 				</NavLink>
+				<NavLink to="/submissions" className={navItemClass}>
+					<FileText className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Submissions</span>}
+				</NavLink>
 				<NavLink to="/rooms" className={navItemClass}>
 					<Video className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Rooms</span>}
+				</NavLink>
+				<NavLink to="/store" className={navItemClass}>
+					<ShoppingCart className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Store</span>}
 				</NavLink>
 				<NavLink to="/payments" className={navItemClass}>
 					<CreditCard className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Payments</span>}
 				</NavLink>
+				<button
+				onClick={()=> handleLogout()}
+				>Click Me</button>
 				{role === 'superadmin' && (
 					<NavLink to="/settings" className={navItemClass}>
 						<Settings className="h-5 w-5" />
@@ -74,5 +98,3 @@ export default function Sidebar() {
 		</aside>
 	);
 }
-
-
