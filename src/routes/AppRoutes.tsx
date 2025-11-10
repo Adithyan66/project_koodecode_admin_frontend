@@ -18,6 +18,8 @@ import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
 import ProtectedRoute from './ProtectedRoute';
 import MainLayout from '../layouts/MainLayout';
+import Badges from '../pages/Badges';
+import BadgeDetail from '../pages/BadgeDetail';
 
 export default function AppRoutes() {
 	return (
@@ -40,6 +42,8 @@ export default function AppRoutes() {
 				<Route path="/problems/:slug" element={<ProblemDetail />} />
 				<Route path="/contests" element={<Contests />} />
 				<Route path="/submissions" element={<Submissions />} />
+				<Route path="/badges" element={<Badges />} />
+				<Route path="/badges/:badgeId" element={<BadgeDetail />} />
 				<Route path="/rooms" element={<RoomsList />} />
 				<Route path="/rooms/:roomId" element={<RoomDetail />} />
 				<Route path="/submissions/:submissionId" element={<SubmissionDetail />} />

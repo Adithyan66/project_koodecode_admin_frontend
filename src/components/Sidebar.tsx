@@ -10,6 +10,7 @@ import {
 	ShoppingCart,
 	CreditCard,
 	Settings,
+	Award,
 	Menu,
 } from 'lucide-react';
 import type { RootState } from '../redux/store';
@@ -27,13 +28,12 @@ export default function Sidebar() {
 	const dispatch = useDispatch();
 	const isSidebarOpen = useSelector((s: RootState) => s.ui.isSidebarOpen);
 	const role = useSelector((s: RootState) => s.auth.user?.role);
-	const navigate = useNavigate()
-	
+	const navigate = useNavigate();
 
-	async function handleLogout (){
-		const res = await axiosInstance.post('auth/logout')
-		dispatch(logout())
-		navigate('/login')
+	async function handleLogout() {
+		await axiosInstance.post('auth/logout');
+		dispatch(logout());
+		navigate('/login');
 	}
 
 	return (
@@ -61,6 +61,10 @@ export default function Sidebar() {
 					<Users className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Users</span>}
 				</NavLink>
+				<NavLink to="/badges" className={navItemClass}>
+					<Award className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Badges</span>}
+				</NavLink>
 				<NavLink to="/problems" className={navItemClass}>
 					<FileCode className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Problems</span>}
@@ -85,9 +89,13 @@ export default function Sidebar() {
 					<CreditCard className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Payments</span>}
 				</NavLink>
-				<button
-				onClick={()=> handleLogout()}
-				>Click Me</button>
+				<Button
+					onClick={handleLogout}
+					variant="secondary"
+					className="w-full justify-center"
+				>
+					Logout
+				</Button>
 				{role === 'superadmin' && (
 					<NavLink to="/settings" className={navItemClass}>
 						<Settings className="h-5 w-5" />

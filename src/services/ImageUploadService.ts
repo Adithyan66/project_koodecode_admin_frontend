@@ -13,93 +13,88 @@ export interface UploadResponse {
 }
 
 export class ImageUploadService {
-    static async generateUploadUrl(type: string, fileExtension: string): Promise<UploadResponse> {
-        const response = await axiosInstance.post(`/image-service/upload-url/${type}`, {
-            fileExtension
-        });
-        return response.data.data;
-    }
+	static async generateUploadUrl(type: string, fileExtension: string): Promise<UploadResponse> {
+		const response = await axiosInstance.post(`/image-service/upload-url/${type}`, {
+			fileExtension
+		});
+		return response.data.data;
+	}
 
-    static async uploadToS3(
-        uploadUrl: string,
-        file: File,
-        onProgress?: (progress: number) => void
-    ): Promise<void> {
-        await axios.put(uploadUrl, file, {
-            headers: {
-                'Content-Type': file.type,
-            },
-            onUploadProgress: (progressEvent) => {
-                if (onProgress && progressEvent.total) {
-                    const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    onProgress(progress);
-                }
-            }
-        });
-    }
+	static async uploadToS3(
+		uploadUrl: string,
+		file: File,
+		onProgress?: (progress: number) => void
+	): Promise<void> {
+		await axios.put(uploadUrl, file, {
+			headers: {
+				'Content-Type': file.type,
+			},
+			onUploadProgress: (progressEvent) => {
+				if (onProgress && progressEvent.total) {
+					const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+					onProgress(progress);
+				}
+			}
+		});
+	}
 
-    static async confirmUpload(imageKey: string, publicUrl: string, imageType: string): Promise<void> {
-        await axiosInstance.post('/image-service/confirm-upload', {
-            imageKey,
-            publicUrl,
-            imageType
-        });
-    }
+	static async confirmUpload(imageKey: string, publicUrl: string, imageType: string): Promise<void> {
+		await axiosInstance.post('/image-service/confirm-upload', {
+			imageKey,
+			publicUrl,
+			imageType
+		});
+	}
 
-    // Generic image upload method
-    static async uploadImage(
-        type: string,
-        file: File,
-        onProgress?: (progress: number) => void
-    ): Promise<string> {
-        if (!file.type.startsWith('image/')) {
-            throw new Error('Please select an image file');
-        }
+	static async uploadImage(
+		type: string,
+		file: File,
+		onProgress?: (progress: number) => void
+	): Promise<string> {
+		if (!file.type.startsWith('image/')) {
+			throw new Error('Please select an image file');
+		}
 
-        if (file.size > 5 * 1024 * 1024) { // 5MB limit
-            throw new Error('File size must be less than 5MB');
-        }
+		if (file.size > 5 * 1024 * 1024) {
+			throw new Error('File size must be less than 5MB');
+		}
 
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        if (!allowedTypes.includes(file.type)) {
-            throw new Error('Only JPEG, PNG, and WebP images are allowed');
-        }
+		const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+		if (!allowedTypes.includes(file.type)) {
+			throw new Error('Only JPEG, PNG, and WebP images are allowed');
+		}
 
-        const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+		const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
 
-        const { uploadUrl, imageKey, publicUrl } = await this.generateUploadUrl(type, fileExtension);
+		const { uploadUrl, imageKey, publicUrl } = await this.generateUploadUrl(type, fileExtension);
 
-        await this.uploadToS3(uploadUrl, file, onProgress);
+		await this.uploadToS3(uploadUrl, file, onProgress);
 
-        await this.confirmUpload(imageKey, publicUrl , type);
+		await this.confirmUpload(imageKey, publicUrl, type);
 
-        // Return the imageKey for ImageKit optimization
-        return imageKey;
-    }
+		return imageKey;
+	}
 
-    // Contest thumbnail specific upload
-    static async uploadContestThumbnail(
-        file: File,
-        onProgress?: (progress: number) => void
-    ): Promise<string> {
-        return this.uploadImage('contest-thumbnail', file, onProgress);
-    }
+	static async uploadContestThumbnail(
+		file: File,
+		onProgress?: (progress: number) => void
+	): Promise<string> {
+		return this.uploadImage('contest-thumbnail', file, onProgress);
+	}
 
-    // Room thumbnail specific upload
-    static async uploadRoomThumbnail(
-        file: File,
-        onProgress?: (progress: number) => void
-    ): Promise<string> {
-        return this.uploadImage('room-thumbnail', file, onProgress);
-    }
+	static async uploadRoomThumbnail(
+		file: File,
+		onProgress?: (progress: number) => void
+	): Promise<string> {
+		return this.uploadImage('room-thumbnail', file, onProgress);
+	}
 
-    // Profile image upload (for backward compatibility)
-    static async uploadProfileImage(
-        file: File,
-        onProgress?: (progress: number) => void
-    ): Promise<string> {
-        return this.uploadImage('profile-images', file, onProgress);
-    }
+	static async uploadProfileImage(
+		file: File,
+		onProgress?: (progress: number) => void
+	): Promise<string> {
+		return this.uploadImage('profile-images', file, onProgress);
+	}
 }
 
 export default new ImageUploadService();

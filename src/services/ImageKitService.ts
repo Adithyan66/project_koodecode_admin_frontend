@@ -56,6 +56,16 @@ class ImageKitService {
     });
   }
 
+  getBadgeIconUrl(s3Key: string, size: number = 64): string {
+    return this.getOptimizedImageUrl(s3Key, {
+      width: size,
+      height: size,
+      crop: 'force',
+      quality: 90,
+      format: 'auto',
+    });
+  }
+
   // Contest thumbnail specific
   getContestThumbnailUrl(s3Key: string, width: number = 400, height: number = 200): string {
     return this.getOptimizedImageUrl(s3Key, {
