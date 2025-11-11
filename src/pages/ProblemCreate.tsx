@@ -4,7 +4,7 @@ import { Check, ChevronLeft, ChevronRight, Code, Settings, Tag, Eye, AlertCircle
 import { toast } from 'react-toastify';
 import { fetchLanguages, createProblem } from '../api/problems';
 import type { LanguageItem } from '../types/language';
-import BasicInfoTab from '../components/admin/problems/addProblems/BasicInfoTab';
+import BasicInfoTab, { type BasicInfoTabProps } from '../components/admin/problems/addProblems/BasicInfoTab';
 import FunctionDefinitionTab from '../components/admin/problems/addProblems/FunctionDefinitionTab';
 import ConstraintsTab from '../components/admin/problems/addProblems/ConstraintsTab';
 import ExamplesTab from '../components/admin/problems/addProblems/ExamplesTab';
@@ -35,6 +35,7 @@ export default function ProblemCreate() {
   // Basic Information
   const [title, setTitle] = useState('');
   const [difficulty, setDifficulty] = useState('easy');
+  const [problemType, setProblemType] = useState<BasicInfoTabProps['problemType']>('array');
   const [description, setDescription] = useState('');
   const [isActive, setIsActive] = useState(true);
 
@@ -247,6 +248,7 @@ export default function ProblemCreate() {
       const problemData = {
         title: title.trim(),
         difficulty,
+        type: problemType,
         description: description.trim(),
         functionName: functionName.trim(),
         supportedLanguages: selectedLanguageIds,
@@ -326,6 +328,8 @@ export default function ProblemCreate() {
               setTitle={setTitle}
               difficulty={difficulty}
               setDifficulty={setDifficulty}
+            problemType={problemType}
+            setProblemType={setProblemType}
               description={description}
               setDescription={setDescription}
               isActive={isActive}

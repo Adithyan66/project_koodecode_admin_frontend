@@ -1,11 +1,13 @@
 import React from 'react';
 import Input from '../../../Input';
 
-interface BasicInfoTabProps {
+export interface BasicInfoTabProps {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   difficulty: string;
   setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+  problemType: 'array' | 'pattern' | 'dsa';
+  setProblemType: React.Dispatch<React.SetStateAction<'array' | 'pattern' | 'dsa'>>;
   description: string;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   isActive: boolean;
@@ -19,6 +21,8 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
   setTitle,
   difficulty,
   setDifficulty,
+  problemType,
+  setProblemType,
   description,
   setDescription,
   isActive,
@@ -67,6 +71,21 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
               <option value="easy">🟢 Easy</option>
               <option value="medium">🟡 Medium</option>
               <option value="hard">🔴 Hard</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-3 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Problem Type *
+            </label>
+            <select
+              value={problemType}
+              onChange={(e) => setProblemType(e.target.value as 'array' | 'pattern' | 'dsa')}
+              className="w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-3 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
+            >
+              <option value="array">Array</option>
+              <option value="pattern">Pattern</option>
+              <option value="dsa">DSA</option>
             </select>
           </div>
 
