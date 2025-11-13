@@ -20,6 +20,7 @@ import ProtectedRoute from './ProtectedRoute';
 import MainLayout from '../layouts/MainLayout';
 import Badges from '../pages/Badges';
 import BadgeDetail from '../pages/BadgeDetail';
+import Notifications from '../pages/Notifications';
 
 export default function AppRoutes() {
 	return (
@@ -50,6 +51,7 @@ export default function AppRoutes() {
 				<Route path="/store" element={<StoreManagement />} />
 				<Route path="/payments" element={<CoinPurchases />} />
 				<Route path="/payments/:id" element={<PaymentDetails />} />
+				<Route path="/notifications" element={<Notifications />} />
 				<Route
 					path="/settings"
 					element={

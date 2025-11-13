@@ -12,6 +12,7 @@ import {
 	Settings,
 	Award,
 	Menu,
+	Bell,
 } from 'lucide-react';
 import type { RootState } from '../redux/store';
 import { toggleSidebar } from '../redux/slices/uiSlice';
@@ -64,6 +65,10 @@ export default function Sidebar() {
 				<NavLink to="/badges" className={navItemClass}>
 					<Award className="h-5 w-5" />
 					{isSidebarOpen && <span className="truncate">Badges</span>}
+				</NavLink>
+				<NavLink to="/notifications" className={navItemClass}>
+					<Bell className="h-5 w-5" />
+					{isSidebarOpen && <span className="truncate">Notifications</span>}
 				</NavLink>
 				<NavLink to="/problems" className={navItemClass}>
 					<FileCode className="h-5 w-5" />
