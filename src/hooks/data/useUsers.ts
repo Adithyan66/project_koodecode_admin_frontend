@@ -3,6 +3,7 @@ import { fetchUsers, type UsersQuery } from '../../api/users';
 import type { User } from '../../types/user';
 import { usePagination } from '../utils/usePagination';
 import { useSorting } from '../utils/useSorting';
+import { imageKitService } from '../../services/ImageKitService';
 
 interface UseUsersResult {
 	users: User[];
@@ -38,7 +39,7 @@ export function useUsers(): UseUsersResult {
 		totalCount,
 	};
 
-	const { state: sortingState, actions: sortingActions } = useSorting({
+	const { state: sortingState, actions: sortingActions } = useSorting<string>({
 		initialSortBy: 'createdAt',
 		initialSortOrder: 'desc',
 	});
@@ -58,7 +59,27 @@ export function useUsers(): UseUsersResult {
 			};
 
 			const response = await fetchUsers(params);
-			setUsers(response.data.users);
+			const enhancedUsers = response.data.users.map((user) => {
+				const getAvatarUrl = () => {
+					if (user.profilePicKey) {
+						return imageKitService.getAvatarUrl(user.profilePicKey, 48);
+					}
+
+					if (user.profilePicUrl) {
+						return user.profilePicUrl.startsWith('http')
+							? user.profilePicUrl
+							: imageKitService.getAvatarUrl(user.profilePicUrl, 48);
+					}
+
+					return undefined;
+				};
+
+				return {
+					...user,
+					avatarUrl: getAvatarUrl(),
+				};
+			});
+			setUsers(enhancedUsers);
 			setTotalCount(response.data.pagination.total);
 		} catch (err: any) {
 			setError(err?.response?.data?.message || 'Failed to fetch users');

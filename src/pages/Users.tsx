@@ -32,11 +32,35 @@ export default function Users() {
 		navigate(`/users/${user.id}`);
 	};
 
+	const getInitials = (user: User) => {
+		const source = user.fullName || user.userName || user.email;
+		return source
+			.split(' ')
+			.map((part) => part.charAt(0).toUpperCase())
+			.slice(0, 2)
+			.join('');
+	};
+
 	const columns: TableColumn<User>[] = [
 		{
 			key: 'fullName',
 			label: 'Full Name',
 			sortable: true,
+			render: (_, user) => (
+				<div className="flex items-center gap-3">
+					{user.avatarUrl ? (
+						<img src={user.avatarUrl} alt={user.fullName || user.userName} className="h-10 w-10 rounded-full object-cover" />
+					) : (
+						<span className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-200">
+							{getInitials(user)}
+						</span>
+					)}
+					<div>
+						<div className="font-medium text-slate-900 dark:text-slate-100">{user.fullName || '—'}</div>
+						<div className="text-xs text-slate-500">@{user.userName}</div>
+					</div>
+				</div>
+			),
 		},
 		{
 			key: 'userName',

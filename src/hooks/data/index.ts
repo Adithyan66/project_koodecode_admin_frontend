@@ -13,6 +13,7 @@ export { useRoomDetail } from './useRoomDetail';
 export { useStoreItems } from './useStoreItems';
 export { useSubmissionDetail } from './useSubmissionDetail';
 export { useSubmissions } from './useSubmissions';
+export { useDashboard } from './useDashboard';
 
 // Re-export types
 export type { UseProblemsReturn } from './useProblems';

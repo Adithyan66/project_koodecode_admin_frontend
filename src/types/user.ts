@@ -8,6 +8,8 @@ export interface User {
 	provider: string;
 	emailVerified: boolean;
 	profilePicKey?: string;
+	profilePicUrl?: string;
+	avatarUrl?: string;
 }
 
 export interface UserDetail extends User {
