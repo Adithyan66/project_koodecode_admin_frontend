@@ -2,11 +2,11 @@ import React from 'react';
 import { 
   Calendar, 
   Clock, 
-  Users, 
+  // Users, 
   Trophy, 
   Target, 
   Award,
-  User,
+  // User,
   CheckCircle,
   XCircle,
   AlertCircle

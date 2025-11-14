@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { X } from 'lucide-react';
 import Button from './Button';
 
@@ -7,7 +8,7 @@ interface ModalProps {
   onClose: () => void;
   onConfirm?: () => void;
   title?: string;
-  message: string;
+  message: ReactNode;
   confirmText?: string;
   cancelText?: string;
   showCancel?: boolean;
@@ -95,9 +96,9 @@ export default function Modal({
 
         {/* Body */}
         <div className="p-6">
-          <p className="text-gray-700 dark:text-gray-300">
+          <div className="text-gray-700 dark:text-gray-300">
             {message}
-          </p>
+          </div>
         </div>
 
         {/* Footer */}

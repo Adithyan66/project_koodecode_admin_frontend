@@ -8,10 +8,10 @@ import {
 	Code,
 	DollarSign,
 	ShoppingBag,
-	Users,
+	// Users,
 	Home,
-	Award,
-	BarChart3,
+	// Award,
+	// BarChart3,
 	Loader2,
 	Calendar,
 	Users as UsersIcon,
@@ -207,26 +207,26 @@ export default function ExtendedDataSections({
 	submissionData,
 	financialData,
 	storeData,
-	socialData,
+	// socialData,
 	roomData,
-	achievementData,
-	analyticsData,
+	// achievementData,
+	// analyticsData,
 	loadingContestData,
 	loadingSubmissionData,
 	loadingFinancialData,
 	loadingStoreData,
-	loadingSocialData,
+	// loadingSocialData,
 	loadingRoomData,
-	loadingAchievementData,
-	loadingAnalyticsData,
+	// loadingAchievementData,
+	// loadingAnalyticsData,
 	contestDataError,
 	submissionDataError,
 	financialDataError,
 	storeDataError,
-	socialDataError,
+	// socialDataError,
 	roomDataError,
-	achievementDataError,
-	analyticsDataError,
+	// achievementDataError,
+	// analyticsDataError,
 	contestPagination,
 	submissionPagination,
 	financialPagination,
@@ -235,10 +235,10 @@ export default function ExtendedDataSections({
 	onLoadSubmissionData,
 	onLoadFinancialData,
 	onLoadStoreData,
-	onLoadSocialData,
+	// onLoadSocialData,
 	onLoadRoomData,
-	onLoadAchievementData,
-	onLoadAnalyticsData
+	// onLoadAchievementData,
+	// onLoadAnalyticsData
 }: ExtendedDataSectionsProps) {
 	// State for code modal
 	const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
@@ -563,40 +563,40 @@ export default function ExtendedDataSections({
 		);
 	};
 
-	const renderSocialData = () => {
-		if (!socialData) return <div>No social data available</div>;
+	// const renderSocialData = () => {
+	// 	if (!socialData) return <div>No social data available</div>;
 
-		return (
-			<div className="space-y-4">
-				<div className="grid grid-cols-2 gap-4">
-					<div className="text-center">
-						<p className="text-2xl font-bold text-blue-600">{socialData.followers}</p>
-						<p className="text-sm text-gray-600 dark:text-gray-400">Followers</p>
-					</div>
-					<div className="text-center">
-						<p className="text-2xl font-bold text-green-600">{socialData.following}</p>
-						<p className="text-sm text-gray-600 dark:text-gray-400">Following</p>
-					</div>
-				</div>
+	// 	return (
+	// 		<div className="space-y-4">
+	// 			<div className="grid grid-cols-2 gap-4">
+	// 				<div className="text-center">
+	// 					<p className="text-2xl font-bold text-blue-600">{socialData.followers}</p>
+	// 					<p className="text-sm text-gray-600 dark:text-gray-400">Followers</p>
+	// 				</div>
+	// 				<div className="text-center">
+	// 					<p className="text-2xl font-bold text-green-600">{socialData.following}</p>
+	// 					<p className="text-sm text-gray-600 dark:text-gray-400">Following</p>
+	// 				</div>
+	// 			</div>
 
-				{socialData.socialConnections && socialData.socialConnections.length > 0 && (
-					<div>
-						<h4 className="font-semibold mb-2">Social Connections</h4>
-						<div className="space-y-2">
-							{socialData.socialConnections.map((connection: any, index: number) => (
-								<div key={index} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
-									<span className="font-medium">{connection.platform}</span>
-									<div className="text-sm text-gray-600 dark:text-gray-400">
-										@{connection.username} {connection.isVerified && '✓'}
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-			</div>
-		);
-	};
+	// 			{socialData.socialConnections && socialData.socialConnections.length > 0 && (
+	// 				<div>
+	// 					<h4 className="font-semibold mb-2">Social Connections</h4>
+	// 					<div className="space-y-2">
+	// 						{socialData.socialConnections.map((connection: any, index: number) => (
+	// 							<div key={index} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
+	// 								<span className="font-medium">{connection.platform}</span>
+	// 								<div className="text-sm text-gray-600 dark:text-gray-400">
+	// 									@{connection.username} {connection.isVerified && '✓'}
+	// 								</div>
+	// 							</div>
+	// 						))}
+	// 					</div>
+	// 				</div>
+	// 			)}
+	// 		</div>
+	// 	);
+	// };
 
 	const renderRoomData = () => {
 		if (!roomData) return <div>No room data available</div>;
@@ -642,82 +642,82 @@ export default function ExtendedDataSections({
 		);
 	};
 
-	const renderAchievementData = () => {
-		if (!achievementData) return <div>No achievement data available</div>;
+	// const renderAchievementData = () => {
+	// 	if (!achievementData) return <div>No achievement data available</div>;
 
-		return (
-			<div className="space-y-4">
-				<div className="text-center">
-					<p className="text-3xl font-bold text-yellow-600">{achievementData.totalBadges}</p>
-					<p className="text-sm text-gray-600 dark:text-gray-400">Total Badges</p>
-				</div>
+	// 	return (
+	// 		<div className="space-y-4">
+	// 			<div className="text-center">
+	// 				<p className="text-3xl font-bold text-yellow-600">{achievementData.totalBadges}</p>
+	// 				<p className="text-sm text-gray-600 dark:text-gray-400">Total Badges</p>
+	// 			</div>
 
-				{achievementData.achievementProgress && achievementData.achievementProgress.length > 0 && (
-					<div>
-						<h4 className="font-semibold mb-2">Achievement Progress</h4>
-						<div className="space-y-3">
-							{achievementData.achievementProgress.map((achievement: any, index: number) => (
-								<div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
-									<div className="flex justify-between items-center mb-2">
-										<span className="font-medium">{achievement.achievementName}</span>
-										<span className="text-sm text-gray-600 dark:text-gray-400">
-											{achievement.progress}/{achievement.target}
-										</span>
-									</div>
-									<div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-										<div
-											className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-											style={{ width: `${(achievement.progress / achievement.target) * 100}%` }}
-										></div>
-									</div>
-									<p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-										{achievement.description}
-									</p>
-								</div>
-							))}
-						</div>
-					</div>
-				)}
-			</div>
-		);
-	};
+	// 			{achievementData.achievementProgress && achievementData.achievementProgress.length > 0 && (
+	// 				<div>
+	// 					<h4 className="font-semibold mb-2">Achievement Progress</h4>
+	// 					<div className="space-y-3">
+	// 						{achievementData.achievementProgress.map((achievement: any, index: number) => (
+	// 							<div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
+	// 								<div className="flex justify-between items-center mb-2">
+	// 									<span className="font-medium">{achievement.achievementName}</span>
+	// 									<span className="text-sm text-gray-600 dark:text-gray-400">
+	// 										{achievement.progress}/{achievement.target}
+	// 									</span>
+	// 								</div>
+	// 								<div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+	// 									<div
+	// 										className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+	// 										style={{ width: `${(achievement.progress / achievement.target) * 100}%` }}
+	// 									></div>
+	// 								</div>
+	// 								<p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+	// 									{achievement.description}
+	// 								</p>
+	// 							</div>
+	// 						))}
+	// 					</div>
+	// 				</div>
+	// 			)}
+	// 		</div>
+	// 	);
+	// };
 
-	const renderAnalyticsData = () => {
-		if (!analyticsData) return <div>No analytics data available</div>;
+	// const renderAnalyticsData = () => {
+	// 	if (!analyticsData) return <div>No analytics data available</div>;
 
-		return (
-			<div className="space-y-4">
-				{analyticsData.problemSolvingPatterns && (
-					<div>
-						<h4 className="font-semibold mb-2">Problem Solving Patterns</h4>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<div className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
-								<p className="text-sm text-gray-600 dark:text-gray-400">Preferred Difficulty</p>
-								<p className="font-medium">{analyticsData.problemSolvingPatterns.preferredDifficulty}</p>
-							</div>
-							<div className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
-								<p className="text-sm text-gray-600 dark:text-gray-400">Average Solve Time</p>
-								<p className="font-medium">{analyticsData.problemSolvingPatterns.averageSolveTime} minutes</p>
-							</div>
-						</div>
+	// 	return (
+	// 		<div className="space-y-4">
+	// 			{analyticsData.problemSolvingPatterns && (
+	// 				<div>
+	// 					<h4 className="font-semibold mb-2">Problem Solving Patterns</h4>
+	// 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+	// 						<div className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
+	// 							<p className="text-sm text-gray-600 dark:text-gray-400">Preferred Difficulty</p>
+	// 							<p className="font-medium">{analyticsData.problemSolvingPatterns.preferredDifficulty}</p>
+	// 						</div>
+	// 						<div className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
+	// 							<p className="text-sm text-gray-600 dark:text-gray-400">Average Solve Time</p>
+	// 							<p className="font-medium">{analyticsData.problemSolvingPatterns.averageSolveTime} minutes</p>
+	// 						</div>
+	// 					</div>
 
-						{analyticsData.problemSolvingPatterns.preferredLanguages && (
-							<div className="mt-4">
-								<p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Preferred Languages</p>
-								<div className="flex flex-wrap gap-2">
-									{analyticsData.problemSolvingPatterns.preferredLanguages.map((lang: string, index: number) => (
-										<span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded dark:bg-blue-900 dark:text-blue-200">
-											{lang}
-										</span>
-									))}
-								</div>
-							</div>
-						)}
-					</div>
-				)}
-			</div>
-		);
-	};
+	// 					{analyticsData.problemSolvingPatterns.preferredLanguages && (
+	// 						<div className="mt-4">
+	// 							<p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Preferred Languages</p>
+	// 							<div className="flex flex-wrap gap-2">
+	// 								{analyticsData.problemSolvingPatterns.preferredLanguages.map((lang: string, index: number) => (
+	// 									<span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded dark:bg-blue-900 dark:text-blue-200">
+	// 										{lang}
+	// 									</span>
+	// 								))}
+	// 							</div>
+	// 						</div>
+	// 					)}
+	// 				</div>
+	// 			)}
+	// 		</div>
+	// 	);
+	// };
 
 	return (
 		<div className="space-y-4">

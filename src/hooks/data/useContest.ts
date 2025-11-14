@@ -3,7 +3,7 @@ import { fetchActiveContests, fetchUpcomingContests, fetchPastContests, deleteCo
 import type { 
   Contest, 
   ContestQuery, 
-  ContestPagination 
+  // ContestPagination 
 } from '../../types/contest';
 import { useGlobalLoading } from '../ui/useGlobalLoading';
 import toast from 'react-hot-toast';

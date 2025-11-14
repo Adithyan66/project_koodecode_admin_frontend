@@ -41,7 +41,7 @@ export function useStoreItems(): UseStoreItemsResult {
   });
 
   const { sortBy, sortOrder } = sortingState;
-  const { handleSort } = sortingActions;
+  const handleSort = sortingActions.handleSort as (column: string) => void;
 
   const fetchStoreItemsData = async () => {
     setLoading(true);
@@ -93,7 +93,7 @@ export function useStoreItems(): UseStoreItemsResult {
     paginationActions,
     sortBy,
     sortOrder,
-    handleSort,
+    handleSort  ,
     refetch: fetchStoreItemsData,
     updateItem,
     toggleActive,

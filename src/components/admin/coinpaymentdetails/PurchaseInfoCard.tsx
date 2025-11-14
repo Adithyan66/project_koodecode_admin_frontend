@@ -138,14 +138,14 @@ export default function PurchaseInfoCard({ purchase }: PurchaseInfoCardProps) {
 							<p className="mt-1">{formatDate(purchase.reconciledAt)}</p>
 						</div>
 					)}
-					{purchase.receipt && (
+					{/* {purchase.receipt && (
 						<div className="col-span-2">
 							<p className="text-sm text-gray-600">Receipt</p>
 							<a href={purchase.receipt} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
 								View Receipt
 							</a>
 						</div>
-					)}
+					)} */}
 				</div>
 
 				{hasRefundInfo && (

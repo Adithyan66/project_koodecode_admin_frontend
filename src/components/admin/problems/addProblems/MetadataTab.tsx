@@ -21,24 +21,22 @@ const MetadataTab: React.FC<Props> = ({
   errors,
 }) => {
   const addToArray = (
-    array: string[],
     setter: React.Dispatch<React.SetStateAction<string[]>>,
   ) => {
     setter((prev) => [...prev, '']);
   };
 
   const removeFromArray = (
-    array: string[],
     setter: React.Dispatch<React.SetStateAction<string[]>>,
     index: number,
   ) => {
-    if (array.length > 1) {
-      setter((prev) => prev.filter((_, i) => i !== index));
-    }
+    setter((prev) => {
+      if (prev.length <= 1) return prev;
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   const updateArray = (
-    array: string[],
     setter: React.Dispatch<React.SetStateAction<string[]>>,
     index: number,
     value: string,
@@ -56,7 +54,7 @@ const MetadataTab: React.FC<Props> = ({
           </h2>
           <button
             type="button"
-            onClick={() => addToArray(tags, setTags)}
+            onClick={() => addToArray(setTags)}
             className="flex items-center rounded-lg bg-green-500 px-4 py-2 text-white transition-colors hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -72,14 +70,14 @@ const MetadataTab: React.FC<Props> = ({
               <input
                 type="text"
                 value={tag}
-                onChange={(e) => updateArray(tags, setTags, index, e.target.value)}
+                onChange={(e) => updateArray(setTags, index, e.target.value)}
                 className="flex-1 rounded-lg border-2 border-gray-200 bg-white px-4 py-3 transition-colors focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                 placeholder="Array, Hash Table, Two Pointers"
               />
               {tags.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => removeFromArray(tags, setTags, index)}
+                  onClick={() => removeFromArray(setTags, index)}
                   className="text-red-500 transition-colors hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                 >
                   <Minus className="h-5 w-5" />
@@ -98,7 +96,7 @@ const MetadataTab: React.FC<Props> = ({
           </h2>
           <button
             type="button"
-            onClick={() => addToArray(hints, setHints)}
+            onClick={() => addToArray(setHints)}
             className="flex items-center rounded-lg bg-yellow-500 px-4 py-2 text-white transition-colors hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -112,14 +110,14 @@ const MetadataTab: React.FC<Props> = ({
               <input
                 type="text"
                 value={hint}
-                onChange={(e) => updateArray(hints, setHints, index, e.target.value)}
+                onChange={(e) => updateArray(setHints, index, e.target.value)}
                 className="flex-1 rounded-lg border-2 border-gray-200 bg-white px-4 py-3 transition-colors focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                 placeholder="A really brute force way would be to search for all possible pairs of numbers..."
               />
               {hints.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => removeFromArray(hints, setHints, index)}
+                  onClick={() => removeFromArray(setHints, index)}
                   className="text-red-500 transition-colors hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                 >
                   <Minus className="h-5 w-5" />
@@ -138,7 +136,7 @@ const MetadataTab: React.FC<Props> = ({
           </h2>
           <button
             type="button"
-            onClick={() => addToArray(companies, setCompanies)}
+            onClick={() => addToArray(setCompanies)}
             className="flex items-center rounded-lg bg-indigo-500 px-4 py-2 text-white transition-colors hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -152,14 +150,14 @@ const MetadataTab: React.FC<Props> = ({
               <input
                 type="text"
                 value={company}
-                onChange={(e) => updateArray(companies, setCompanies, index, e.target.value)}
+                onChange={(e) => updateArray(setCompanies, index, e.target.value)}
                 className="flex-1 rounded-lg border-2 border-gray-200 bg-white px-4 py-3 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
                 placeholder="Google, Microsoft, Amazon, Apple"
               />
               {companies.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => removeFromArray(companies, setCompanies, index)}
+                  onClick={() => removeFromArray(setCompanies, index)}
                   className="text-red-500 transition-colors hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                 >
                   <Minus className="h-5 w-5" />

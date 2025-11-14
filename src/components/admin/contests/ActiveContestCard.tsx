@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Users, Trophy, Target } from 'lucide-react';
+import { Clock, Users, Trophy} from 'lucide-react';
 import type { Contest } from '../../../types/contest';
 import { Card } from '../../Card';
 import { imageKitService } from '../../../services/ImageKitService';
@@ -25,9 +25,9 @@ const ActiveContestCard: React.FC<ActiveContestCardProps> = ({
     return `${minutes}m remaining`;
   };
 
-  const formatTime = (timeString: string) => {
-    return new Date(timeString).toLocaleString();
-  };
+  // const formatTime = (timeString: string) => {
+  //   return new Date(timeString).toLocaleString();
+  // };
 
   return (
     <Card className="h-full">

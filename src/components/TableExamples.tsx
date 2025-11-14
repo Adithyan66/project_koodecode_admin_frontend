@@ -1,6 +1,6 @@
 // Example usage of the generic Table component for different data types
 
-import Table, { type TableColumn } from './Table';
+import  { type TableColumn } from './Table';
 
 // Example 1: Users table
 interface User {

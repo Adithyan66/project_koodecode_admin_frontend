@@ -134,7 +134,7 @@ export function useBadges(): UseBadgesResult {
 		paginationActions,
 		sortBy: sortingState.sortBy,
 		sortOrder: sortingState.sortOrder,
-		handleSort: sortingActions.handleSort,
+		handleSort: sortingActions.handleSort as (column: string) => void,
 		filters,
 		setFilters,
 		refetch: fetchData,

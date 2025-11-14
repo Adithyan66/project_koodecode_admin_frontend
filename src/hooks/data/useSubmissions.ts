@@ -61,7 +61,7 @@ export function useSubmissions(): UseSubmissionsResult {
 	});
 
 	const { sortBy, sortOrder } = sortingState;
-	const { handleSort } = sortingActions;
+	const handleSort = sortingActions.handleSort as (column: string) => void;
 
 	const getDateRange = () => {
 		if (dateRangeFilter === 'custom') {

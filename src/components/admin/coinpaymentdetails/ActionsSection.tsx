@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Button from '../../Button';
-import Modal from '../../Modal';
 import type { CoinPurchaseDetail } from '../../../types/coinPurchase';
 import { PurchaseStatus } from '../../../types/coinPurchase';
 

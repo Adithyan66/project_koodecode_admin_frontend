@@ -15,7 +15,7 @@ export default function SubmissionDetail() {
 				value === 'passed' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
 				value === 'failed' || value === 'error' || value === 'compilation_error' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
 				value === 'time_limit_exceeded' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
-				'value === "memory_limit_exceeded"' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
+				value === 'memory_limit_exceeded' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
 				'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200'
 			}`}>
 				{String(value).replace(/_/g, ' ')}

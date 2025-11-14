@@ -2,11 +2,11 @@ import { Card, CardContent } from '../../Card';
 import { imageKitService } from '../../../services/ImageKitService';
 import type { UserDetail } from '../../../types/user';
 import { 
-	User, 
+	// User, 
 	Mail, 
 	MapPin, 
 	Calendar, 
-	Globe, 
+	// Globe, 
 	Github, 
 	Linkedin,
 	Shield,

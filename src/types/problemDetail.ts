@@ -1,4 +1,4 @@
-import type { Parameter, LanguageTemplate, Example } from './problemCreate';
+import type { Parameter, LanguageTemplate } from './problemCreate';
 
 export interface ProblemConstraint {
   parameterName: string;

@@ -1,8 +1,10 @@
-export enum RoomStatus {
-	WAITING = 'waiting',
-	ACTIVE = 'active',
-	INACTIVE = 'inactive'
-}
+export const RoomStatus = {
+	WAITING: 'waiting',
+	ACTIVE: 'active',
+	INACTIVE: 'inactive',
+} as const;
+
+export type RoomStatus = (typeof RoomStatus)[keyof typeof RoomStatus];
 
 export interface Room {
 	id: string;

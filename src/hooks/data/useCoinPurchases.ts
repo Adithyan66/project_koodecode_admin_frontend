@@ -62,7 +62,7 @@ export function useCoinPurchases(): UseCoinPurchasesResult {
 	});
 
 	const { sortBy, sortOrder } = sortingState;
-	const { handleSort } = sortingActions;
+	const handleSort = sortingActions.handleSort as (column: string) => void;
 
 	const fetchPurchasesData = async () => {
 		setLoading(true);

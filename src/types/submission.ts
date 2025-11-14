@@ -1,18 +1,22 @@
-export enum SubmissionStatus {
-	PENDING = 'pending',
-	PROCESSING = 'processing',
-	ACCEPTED = 'accepted',
-	REJECTED = 'rejected',
-	ERROR = 'error',
-	TIME_LIMIT_EXCEEDED = 'time_limit_exceeded',
-	MEMORY_LIMIT_EXCEEDED = 'memory_limit_exceeded',
-	COMPILATION_ERROR = 'compilation_error',
-}
+export const SubmissionStatus = {
+	PENDING: 'pending',
+	PROCESSING: 'processing',
+	ACCEPTED: 'accepted',
+	REJECTED: 'rejected',
+	ERROR: 'error',
+	TIME_LIMIT_EXCEEDED: 'time_limit_exceeded',
+	MEMORY_LIMIT_EXCEEDED: 'memory_limit_exceeded',
+	COMPILATION_ERROR: 'compilation_error',
+} as const;
 
-export enum SubmissionType {
-	PROBLEM = 'problem',
-	CONTEST = 'contest',
-}
+export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus];
+
+export const SubmissionType = {
+	PROBLEM: 'problem',
+	CONTEST: 'contest',
+} as const;
+
+export type SubmissionType = (typeof SubmissionType)[keyof typeof SubmissionType];
 
 export interface SubmissionUser {
 	id: string;

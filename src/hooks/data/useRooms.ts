@@ -50,7 +50,7 @@ export function useRooms(): UseRoomsResult {
 	});
 
 	const { sortBy, sortOrder } = sortingState;
-	const { handleSort } = sortingActions;
+	const handleSort = sortingActions.handleSort as (column: string) => void;
 
 	const fetchRoomsData = async () => {
 		setLoading(true);

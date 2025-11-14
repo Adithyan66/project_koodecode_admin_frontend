@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import type { SetStateAction } from 'react';
 import axiosInstance from '../../api/axios';
 import { ImageUploadService } from '../../services/ImageUploadService';
 import { imageKitService } from '../../services/ImageKitService';
@@ -150,27 +151,31 @@ export function useCreateContest(): UseCreateContestReturn {
     const changedFields: Partial<ContestFormData> = {};
 
     // Compare each field
-    Object.keys(currentData).forEach(key => {
-      const currentValue = currentData[key as keyof ContestFormData];
-      const originalValue = originalData[key as keyof ContestFormData];
+    const setField = (key: keyof ContestFormData, value: ContestFormData[keyof ContestFormData]) => {
+      (changedFields as Record<keyof ContestFormData, ContestFormData[keyof ContestFormData]>)[key] = value;
+    };
+
+    (Object.keys(currentData) as (keyof ContestFormData)[]).forEach((key) => {
+      const currentValue = currentData[key];
+      const originalValue = originalData[key];
 
       // Special handling for arrays (problemIds, coinRewards)
       if (key === 'problemIds' || key === 'coinRewards') {
         if (JSON.stringify(currentValue) !== JSON.stringify(originalValue)) {
-          changedFields[key as keyof ContestFormData] = currentValue;
+          setField(key, currentValue);
         }
       }
       // Special handling for dates
       else if (key === 'startTime' || key === 'endTime' || key === 'registrationDeadline') {
-        const currentTime = currentValue ? new Date(currentValue).getTime() : null;
-        const originalTime = originalValue ? new Date(originalValue).getTime() : null;
+        const currentTime = currentValue ? new Date(currentValue as Date).getTime() : null;
+        const originalTime = originalValue ? new Date(originalValue as Date).getTime() : null;
         if (currentTime !== originalTime) {
-          changedFields[key as keyof ContestFormData] = currentValue;
+          setField(key, currentValue);
         }
       }
       // Regular field comparison
       else if (currentValue !== originalValue) {
-        changedFields[key as keyof ContestFormData] = currentValue;
+        setField(key, currentValue);
       }
     });
 
@@ -197,7 +202,7 @@ export function useCreateContest(): UseCreateContestReturn {
   const [itemsPerPage] = useState(10); // Fixed items per page
 
   // Throttling ref for search
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Note: coinRewards is now part of formData, not a separate state
 
@@ -436,6 +441,13 @@ export function useCreateContest(): UseCreateContestReturn {
     }
   }, []);
 
+  const setCoinRewards = useCallback((value: SetStateAction<CoinReward[]>) => {
+    setFormData((prev) => {
+      const nextRewards = typeof value === 'function' ? value(prev.coinRewards) : value;
+      return { ...prev, coinRewards: nextRewards };
+    });
+  }, []);
+
   const addCoinReward = useCallback(() => {
     setFormData((prev) => {
       const newRank = prev.coinRewards.length + 1;
@@ -500,7 +512,7 @@ export function useCreateContest(): UseCreateContestReturn {
         
         // If no fields have changed, show a message and return
         if (Object.keys(changedFields).length === 0) {
-          toast.info('No changes detected');
+          toast('No changes detected');
           return;
         }
         
@@ -577,6 +589,7 @@ export function useCreateContest(): UseCreateContestReturn {
 
     // Coin rewards state
     coinRewards: formData.coinRewards,
+    setCoinRewards,
 
     // Submission state
     isSubmitting,

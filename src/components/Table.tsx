@@ -19,7 +19,7 @@ export interface TableProps<T> {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
   onSort?: (column: string) => void;
-  rowKey?: keyof T | ((item: T) => string | number);
+  rowKey?: keyof T | string | ((item: T) => string | number);
   className?: string;
   loadingComponent?: React.ReactNode;
   errorComponent?: React.ReactNode;

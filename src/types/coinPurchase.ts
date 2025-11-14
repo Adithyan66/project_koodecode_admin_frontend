@@ -1,24 +1,29 @@
-export enum PurchaseStatus {
-	PENDING = 'pending',
-	COMPLETED = 'completed',
-	FAILED = 'failed',
-	CANCELLED = 'cancelled',
-	REFUNDED = 'refunded'
-}
+export const PurchaseStatus = {
+	PENDING: 'pending',
+	COMPLETED: 'completed',
+	FAILED: 'failed',
+	CANCELLED: 'cancelled',
+	REFUNDED: 'refunded',
+} as const;
+
+export type PurchaseStatus = (typeof PurchaseStatus)[keyof typeof PurchaseStatus];
 
 export interface Note {
 	text: string;
 	createdAt: string;
 	createdBy: string;
+	createdByUserName?: string;
 }
 
-export enum PaymentMethod {
-	UPI = 'upi',
-	CARD = 'card',
-	NET_BANKING = 'net_banking',
-	WALLET = 'wallet',
-	EMI = 'emi'
-}
+export const PaymentMethod = {
+	UPI: 'upi',
+	CARD: 'card',
+	NET_BANKING: 'net_banking',
+	WALLET: 'wallet',
+	EMI: 'emi',
+} as const;
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
 
 export interface CoinPurchase {
 	id: string;

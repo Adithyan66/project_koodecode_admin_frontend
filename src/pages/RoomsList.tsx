@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Table, { type TableColumn } from '../components/Table';
 import Input from '../components/Input';
 import Pagination from '../components/Pagination';
@@ -8,7 +8,7 @@ import { RoomStatus } from '../types/room';
 import { imageKitService } from '../services/ImageKitService';
 
 export default function RoomsList() {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const {
 		rooms,
@@ -67,9 +67,9 @@ export default function RoomsList() {
 		return imageKitService.getRoomThumbnailUrl(thumbnail, 80, 60);
 	};
 
-	const handleRowClick = (room: Room) => {
-		navigate(`/rooms/${room.id}`);
-	};
+	// const handleRowClick = (room: Room) => {
+	// 	navigate(`/rooms/${room.id}`);
+	// };
 
 	const columns: TableColumn<Room>[] = [
 		{
@@ -196,7 +196,7 @@ export default function RoomsList() {
 				sortBy={sortBy}
 				sortOrder={sortOrder}
 				rowKey="id"
-				onRowClick={handleRowClick}
+				// onRowClick={handleRowClick}
 			/>
 
 			{!loading && !error && rooms.length > 0 && (

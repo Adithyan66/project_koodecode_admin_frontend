@@ -42,6 +42,7 @@ export interface ParameterConstraint {
 	maxValue?: number;
 	minLength?: number;
 	maxLength?: number;
+	allowedChars?: string;
 	arrayMinLength?: number;
 	arrayMaxLength?: number;
 	elementConstraints?: ElementConstraints;

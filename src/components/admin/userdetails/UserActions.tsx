@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '../../Card';
 import Button from '../../Button';
 import Modal from '../../Modal';
-import toast from 'react-hot-toast';
 import type { UserDetail } from '../../../types/user';
 import { 
 	Shield, 

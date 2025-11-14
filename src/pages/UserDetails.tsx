@@ -57,7 +57,7 @@ export default function UserDetails() {
 		roomPagination,
 		
 		// Actions
-		refetchUser,
+		// refetchUser,
 		refetchContestData,
 		refetchSubmissionData,
 		refetchFinancialData,

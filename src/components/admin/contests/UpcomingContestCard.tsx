@@ -41,7 +41,7 @@ const UpcomingContestCard: React.FC<UpcomingContestCardProps> = ({
   };
 
   const startDateTime = formatDateTime(contest.startTime);
-  const endDateTime = formatDateTime(contest.endTime);
+  // const endDateTime = formatDateTime(contest.endTime);
 
   return (
     <Card className="h-full">

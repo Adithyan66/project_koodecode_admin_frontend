@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Users, Trophy, Clock } from 'lucide-react';
+import { Calendar,  Trophy, Clock } from 'lucide-react';
 import type { Contest } from '../../../types/contest';
 import {Card} from '../../Card';
 import { imageKitService } from '../../../services/ImageKitService';
