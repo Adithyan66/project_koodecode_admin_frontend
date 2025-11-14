@@ -10,7 +10,7 @@ import { store } from './redux/store'
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<Provider store={store}>
-			<BrowserRouter>
+			<BrowserRouter basename="/admin">
 				<App />
 				<Toaster 
 					position="top-right"
